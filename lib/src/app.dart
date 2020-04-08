@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/routing/router.dart';
+import 'package:notesapp/src/services/login_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 
 class App extends StatelessWidget {
@@ -15,7 +16,7 @@ class App extends StatelessWidget {
       theme: appThemeLight,
       onGenerateRoute: generateRoute,
       navigatorKey: locator<NavigationService>().navigatorKey,
-      initialRoute: homeRoute,
+      initialRoute: locator<LoginService>().isLoggedIn ? homeRoute : loginRoute,
     );
   }
 }
