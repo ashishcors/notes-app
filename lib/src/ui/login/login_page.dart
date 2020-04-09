@@ -98,8 +98,7 @@ class _LoginPageLayoutState extends State<LoginPageLayout> {
                   height: 50,
                   child: MaterialButton(
                     color: Theme.of(context).accentColor,
-                    onPressed: () => _verifyLogin(_emailTextController.text,
-                        _passwordTextController.text),
+                    onPressed: () => _verifyLogin(),
                     child: Text(
                       'LOGIN',
                       style: TextStyle(color: Colors.white),
@@ -134,13 +133,14 @@ class _LoginPageLayoutState extends State<LoginPageLayout> {
     );
   }
 
-  void _verifyLogin(String email, String password) async {
-    final result =
-        await locator<LoginService>().loginUser(email.trim(), password.trim());
+  void _verifyLogin() async {
+    String email = _emailTextController.text.trim();
+    String password = _passwordTextController.text.trim();
+    final result = await locator<LoginService>().loginUser(email, password);
 
     result
-        .doOnSuccess(
-            (value) => {locator<NavigationService>().navigateTo(homeRoute)})
+        .doOnSuccess((_) =>
+            {locator<NavigationService>().navigateToClearStack(homeRoute)})
         .doOnFailure((exception) => {
               (exception is PlatformException)
                   ? showMessage(context, exception.message)

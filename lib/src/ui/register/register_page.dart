@@ -9,3 +9,19 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
+
+class RegisterLayout extends StatefulWidget {
+  @override
+  _RegisterLayoutState createState() => _RegisterLayoutState();
+}
+
+class _RegisterLayoutState extends State<RegisterLayout> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+
+  void _registerUser(){
+
+  }
+}

@@ -7,6 +7,11 @@ class NavigationService {
     return navigatorKey.currentState.pushNamed(routeName);
   }
 
+  Future<dynamic> navigateToClearStack(String routeName) {
+    return navigatorKey.currentState
+        .pushNamedAndRemoveUntil(routeName, (r) => false);
+  }
+
   bool goBack() {
     if (navigatorKey.currentState.canPop()) {
       navigatorKey.currentState.pop();
