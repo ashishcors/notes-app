@@ -12,6 +12,13 @@ class NetworkResult<T> {
     return this;
   }
 
+  dynamic doNextOnSuccess(Function onSuccess) {
+    if (this is Success) {
+      return onSuccess.call((this as Success).value);
+    }
+    return this;
+  }
+
   NetworkResult<T> doOnFailure(Function onFailure) {
     if (this is Failure) {
       onFailure.call((this as Failure).exception);

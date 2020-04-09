@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/routing/route_names.dart';
-import 'package:notesapp/src/services/login_service.dart';
+import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
 
@@ -133,18 +132,19 @@ class _LoginPageLayoutState extends State<LoginPageLayout> {
     );
   }
 
-  void _verifyLogin() async {
+  void _verifyLogin() {
     String email = _emailTextController.text.trim();
     String password = _passwordTextController.text.trim();
-    final result = await locator<LoginService>().loginUser(email, password);
-
-    result
-        .doOnSuccess((_) =>
+    showProgress(context, 'Logging in...');
+    locator<AuthService>()
+        .loginUser(email, password)
+        .then((value) =>
             {locator<NavigationService>().navigateToClearStack(homeRoute)})
-        .doOnFailure((exception) => {
-              (exception is PlatformException)
-                  ? showMessage(context, exception.message)
-                  : showMessage(context, 'An error has occurred.')
+        .catchError((e) => {
+              hideProgress(context),
+              (e is PlatformException)
+                  ? showMessage(context, e.message)
+                  : showMessage(context, e.toString())
             });
   }
 }

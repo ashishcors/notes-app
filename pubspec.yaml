@@ -14,7 +14,7 @@ description: A simple note app using firbase cloud firestore.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -24,10 +24,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
-  firebase_core: ^0.4.0+9
+  firebase_core: ^0.4.4+3
   firebase_analytics: ^5.0.2
-  firebase_auth: ^0.14.0+5
-  cloud_firestore: ^0.12.9+5
+  firebase_auth: ^0.15.5+3
+  cloud_firestore: ^0.13.4+2
   get_it:
   provider:
 
