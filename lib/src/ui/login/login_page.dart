@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/routing/route_names.dart';
+import 'package:notesapp/src/services/login_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
+import 'package:notesapp/src/utils/ui_utils.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -13,8 +16,14 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class LoginPageLayout extends StatelessWidget {
-  Function _onLoginSuccess;
+class LoginPageLayout extends StatefulWidget {
+  @override
+  _LoginPageLayoutState createState() => _LoginPageLayoutState();
+}
+
+class _LoginPageLayoutState extends State<LoginPageLayout> {
+  final _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +62,17 @@ class LoginPageLayout extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 30),
-                Text('LOGIN', style: TextStyle(fontSize: 30)),
+                Text('LOGIN', style: TextStyle(fontSize: 20)),
                 SizedBox(height: 30),
                 TextField(
+                  controller: _emailTextController,
                   decoration: inputFieldDecoration.copyWith(
                     hintText: 'Email',
                   ),
                 ),
                 SizedBox(height: 8),
                 TextField(
+                  controller: _passwordTextController,
                   obscureText: true,
                   decoration: inputFieldDecoration.copyWith(
                     hintText: 'Password',
@@ -87,7 +98,8 @@ class LoginPageLayout extends StatelessWidget {
                   height: 50,
                   child: MaterialButton(
                     color: Theme.of(context).accentColor,
-                    onPressed: () {},
+                    onPressed: () => _verifyLogin(_emailTextController.text,
+                        _passwordTextController.text),
                     child: Text(
                       'LOGIN',
                       style: TextStyle(color: Colors.white),
@@ -120,5 +132,19 @@ class LoginPageLayout extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _verifyLogin(String email, String password) async {
+    final result =
+        await locator<LoginService>().loginUser(email.trim(), password.trim());
+
+    result
+        .doOnSuccess(
+            (value) => {locator<NavigationService>().navigateTo(homeRoute)})
+        .doOnFailure((exception) => {
+              (exception is PlatformException)
+                  ? showMessage(context, exception.message)
+                  : showMessage(context, 'An error has occurred.')
+            });
   }
 }
