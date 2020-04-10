@@ -16,7 +16,8 @@ class App extends StatelessWidget {
       theme: appThemeLight,
       onGenerateRoute: generateRoute,
       navigatorKey: locator<NavigationService>().navigatorKey,
-      initialRoute: locator<AuthService>().isLoggedIn ? homeRoute : loginRoute,
+      initialRoute:
+          locator<AuthService>().isUserLoggedIn ? homeRoute : loginRoute,
     );
   }
 }

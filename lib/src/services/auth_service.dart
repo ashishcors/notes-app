@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  bool _isLoggedIn = false;
+  bool _isUserLoggedIn = false;
 
-  bool get isLoggedIn => _isLoggedIn;
+  bool get isUserLoggedIn => _isUserLoggedIn;
 
   FirebaseUser _firebaseUser;
 
@@ -13,7 +13,7 @@ class AuthService {
     var result = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     _firebaseUser = result.user;
-    _isLoggedIn = true;
+    _isUserLoggedIn = true;
     return _firebaseUser;
   }
 
@@ -22,7 +22,7 @@ class AuthService {
     var result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     _firebaseUser = result.user;
-    _isLoggedIn = true;
+    _isUserLoggedIn = true;
     return _firebaseUser;
   }
 }
