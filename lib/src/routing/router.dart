@@ -5,9 +5,12 @@ import 'package:notesapp/src/ui/forgotPassword/frogot_password.dart';
 import 'package:notesapp/src/ui/home/home_page.dart';
 import 'package:notesapp/src/ui/login/login_page.dart';
 import 'package:notesapp/src/ui/register/register_page.dart';
+import 'package:notesapp/src/ui/splash/splash_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
+    case splashRoute:
+      return _getPageRoute(SplashPage(), settings);
     case homeRoute:
       return _getPageRoute(HomePage(), settings);
     case loginRoute:
@@ -23,7 +26,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case viewNote:
       return _getPageRoute(HomePage(), settings);
     default:
-      return _getPageRoute(HomePage(), settings);
+      return _getPageRoute(SplashPage(), settings);
   }
 }
 
