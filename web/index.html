@@ -36,6 +36,12 @@
 <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
-<script src="./init-firebase.js"></script>
+<script src="./firebase-config.js"></script>
+<script type="text/javascript">
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  firebase.auth();
+  firebase.firestore();
+</script>
 </body>
 </html>
