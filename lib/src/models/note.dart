@@ -1,5 +1,5 @@
 class Note {
-  int noteId;
+  String noteId;
   String title = "";
   String message = "";
 
@@ -8,4 +8,12 @@ class Note {
     this.title,
     this.message,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'noteId': noteId,
+      'title': title,
+      'message': message,
+    };
+  }
 }

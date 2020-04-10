@@ -11,9 +11,9 @@ class User {
 
   Map<String, dynamic> toMap() {
     return {
-      'userid': userId,
+      'userId': userId,
       'displayName': displayName,
-      'emailid': emailId,
+      'emailId': emailId,
     };
   }
 }
