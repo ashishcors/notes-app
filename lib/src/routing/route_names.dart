@@ -5,4 +5,3 @@ const String registerRoute = '/register';
 const String forgotPasswordRoute = '/forgotPassword';
 const String addNote = '/addNote';
 const String editNote = '/editNote';
-const String viewNote = '/viewNote';

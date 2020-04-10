@@ -1,7 +1,7 @@
 class Note {
-  var noteId;
-  var title;
-  var message;
+  int noteId;
+  String title = "";
+  String message = "";
 
   Note({
     this.noteId,

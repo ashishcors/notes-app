@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  Future<dynamic> navigateTo(String routeName) {
-    return navigatorKey.currentState.pushNamed(routeName);
+  Future<dynamic> navigateTo(String routeName, {dynamic argument}) {
+    return navigatorKey.currentState.pushNamed(routeName, arguments: argument);
   }
 
   Future<dynamic> navigateToClearStack(String routeName) {
