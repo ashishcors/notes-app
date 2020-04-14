@@ -8,8 +8,14 @@ class AuthService {
 //  bool get isUserLoggedIn => ;
 
   Future<bool> isUserLoggedIn() async {
-    _firebaseUser = await _auth.currentUser();
+    _firebaseUser ??= await _auth.currentUser();
     return _firebaseUser != null;
+  }
+
+  Future<bool> isEmailVerified() async {
+    _firebaseUser ??= await _auth.currentUser();
+    return true;
+//    return _firebaseUser != null && _firebaseUser.isEmailVerified;
   }
 
   Future<FirebaseUser> loginUser(String email, String password) async {

@@ -19,6 +19,14 @@ class HomePage extends StatelessWidget {
     final isLoggedIn = await locator<AuthService>().isUserLoggedIn();
     if (!isLoggedIn)
       locator<NavigationService>().navigateToClearStack(loginRoute);
+    else
+      _verifyEmail();
+  }
+
+  void _verifyEmail() async {
+    final isEmailVerified = await locator<AuthService>().isEmailVerified();
+    if (!isEmailVerified)
+      locator<NavigationService>().navigateTo(emailVerificationRoute);
   }
 
   @override
