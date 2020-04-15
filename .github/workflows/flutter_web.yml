@@ -45,6 +45,6 @@ jobs:
     - run: git checkout --orphan github-page
     - run: git rm -rf .
 #     - run: git reset HEAD -- .
-    - run: git add build/web/ .
-    - run: git commit -m "new build"
+#     - run: git add build/web/ .
+#     - run: git commit -m "new build"
     - run: git push origin github-page
