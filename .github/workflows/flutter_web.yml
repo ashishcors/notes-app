@@ -14,15 +14,19 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Cache Flutter
-      id: cache-flutter
+    
+    - name: Cache flutter
       uses: actions/cache@v1
+      env:
+        cache-name: cache-flutter
       with:
-        path: cache
-        key: ${{ runner.os }}-cache
-
-    - name: Get dependencies
-      if: steps.cache-flutter.outputs.cache-hit != 'true'
+        path: ~/.cache # npm cache files are stored in `~/.npm` on Linux/macOS
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+      
     - uses: subosito/flutter-action@v1
       with:
         channel: 'beta'
