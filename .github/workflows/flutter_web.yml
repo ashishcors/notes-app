@@ -42,6 +42,6 @@ jobs:
       with:
         name: build
     - run: git checkout --orphan github-page
-    - run: git add build/web .
+    - run: git add build/web
     - run: git commit -m "new build"
     - run: git push origin github-page
