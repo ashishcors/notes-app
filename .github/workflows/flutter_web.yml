@@ -1,0 +1,23 @@
+name: Flutter web CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      # Setup a flutter environment.
+      # https://github.com/marketplace/actions/flutter-action
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'beta'
+    - run: flutter config --enable-web
+    - run: flutter pub get
+    - run: flutter build web
