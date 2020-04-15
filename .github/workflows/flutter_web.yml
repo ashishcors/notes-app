@@ -34,17 +34,11 @@ jobs:
       
     - run: flutter pub get
     - run: flutter build web
-#     - uses: actions/upload-artifact@v1
-#       with:
-#         name: build
-#         path: build/web/
-#     - uses: actions/download-artifact@v1
-#       with:
-#         name: build
+    - run: cd build/web/
+    - run: git init 
     - run: git push origin --delete github-page
     - run: git checkout --orphan github-page
     - run: git rm -rf .
-#     - run: git reset HEAD -- .
-    - run: git add build/web/
+    - run: git add .
     - run: git commit -m "new build"
     - run: git push origin github-page
