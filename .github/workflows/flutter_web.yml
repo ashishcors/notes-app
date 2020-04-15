@@ -41,7 +41,6 @@ jobs:
     - uses: actions/download-artifact@v1
       with:
         name: build
-    - run: git -d github-page
     - run: git checkout --orphan github-page
     - run: git add build/web
     - run: git commit -m "new build"
