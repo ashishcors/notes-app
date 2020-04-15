@@ -43,7 +43,7 @@ jobs:
 #         name: build
     - run: git push origin --delete github-page
     - run: git checkout --orphan github-page
-    - run: git reset HEAD -- .
-    - run: git add build/web/ .
+#     - run: git reset HEAD -- .
+#     - run: git add build/web/ .
     - run: git commit -m "new build"
     - run: git push origin github-page
