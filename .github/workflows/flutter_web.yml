@@ -34,9 +34,11 @@ jobs:
       
     - run: flutter pub get
     - run: flutter build web
+    - run: ls
     - run: cd build/web/
-    - run: git init 
-#     - run: git push origin --delete github-page
+    - run: ls
+    - run: git init
+    - run: git push origin --delete github-page
     - run: git checkout --orphan github-page
     - run: git rm -rf .
     - run: git add .
