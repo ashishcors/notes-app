@@ -41,7 +41,7 @@ jobs:
 #     - uses: actions/download-artifact@v1
 #       with:
 #         name: build
-    - run: git -d github-page
+    - run: git push origin --delete github-page
     - run: git checkout --orphan github-page
     - run: git add .
     - run: git commit -m "new build"
