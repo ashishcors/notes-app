@@ -21,3 +21,8 @@ jobs:
     - run: flutter config --enable-web
     - run: flutter pub get
     - run: flutter build web
+    - uses: actions/download-artifact@v1
+      with:
+        name: web
+        path: build/web
+    - run: ls build/web
