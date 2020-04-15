@@ -21,7 +21,7 @@ jobs:
     - run: flutter config --enable-web
     - run: flutter pub get
     - run: flutter build web
-    - uses: actions/download-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
-        name: my-artifact
-    - run: cat my-artifact
+        name: build
+        path: bulid
