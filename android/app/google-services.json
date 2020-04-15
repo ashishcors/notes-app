@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "681159063100",
+    "firebase_url": "https://q-note-d0609.firebaseio.com",
+    "project_id": "q-note-d0609",
+    "storage_bucket": "q-note-d0609.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681159063100:android:1e3cfe8621c8ae62eaf539",
+        "android_client_info": {
+          "package_name": "com.example.notesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681159063100-m75b5rirv7p389r8ea1l6eomdotvnvgv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0N6u5idqdSpPI30-b2LtNhqOFIG3oYfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681159063100-m75b5rirv7p389r8ea1l6eomdotvnvgv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "681159063100-23idoastrsn2t13ncgeli70lrrfcjsfh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.notesapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
