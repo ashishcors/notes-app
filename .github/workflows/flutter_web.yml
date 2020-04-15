@@ -24,4 +24,10 @@ jobs:
     - uses: actions/upload-artifact@v1
       with:
         name: build
-        path: build/web/ 
+        path: build/web/
+    - uses: actions/download-artifact@v1
+      with:
+        name: build
+    - run: git checkout --orphan github-page
+    - run: git add build/web .
+    - run: git commit -m "new build"
