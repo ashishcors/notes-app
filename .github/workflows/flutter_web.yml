@@ -23,6 +23,5 @@ jobs:
     - run: flutter build web
     - uses: actions/download-artifact@v1
       with:
-        name: "build/web"
-        path: build/web
-    - run: ls build/web
+        name: my-artifact
+    - run: cat my-artifact
