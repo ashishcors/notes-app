@@ -34,10 +34,16 @@ jobs:
       
     - run: flutter pub get
     - run: flutter build web
-    
-    - id: git_commit
-      uses: zwaldowski/git-commit-action@v1
-    - run: echo "${{ steps.git_commit.outputs.sha }}"
+      
+    - name: Commit files
+      run: |
+        git config --local user.email "ashishsumancse@gmail.com"
+        git config --local user.name "Ashish Suman"
+        git commit -m "Add changes" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
       
 #     - run: git init
 #     - run: git push origin --delete github-page
