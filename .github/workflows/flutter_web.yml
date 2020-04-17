@@ -39,4 +39,5 @@ jobs:
       run: |
         git config --local user.email "ashishsumancse@gmail.com"
         git config --local user.name "Ashish Suman"
+        ls
         git subtree push --prefix build/web origin gh-pages
