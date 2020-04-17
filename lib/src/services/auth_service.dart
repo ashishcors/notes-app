@@ -25,6 +25,11 @@ class AuthService {
     return _firebaseUser;
   }
 
+  Future<void> sendVerificationEmail() async {
+    var result = await _firebaseUser.sendEmailVerification();
+    return result;
+  }
+
   Future<FirebaseUser> registerUser(
       String name, String email, String password) async {
     var result = await _auth.createUserWithEmailAndPassword(

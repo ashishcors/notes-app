@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:notesapp/src/services/auth_service.dart';
+import 'package:notesapp/src/utils/ui_utils.dart';
+
+import '../../locator.dart';
 
 class EmailVerificationPage extends StatelessWidget {
   @override
@@ -29,7 +33,7 @@ class EmailVerificationPageLayout extends StatelessWidget {
               fontSize: 15,
             ),),
           MaterialButton(
-            onPressed: _sendVerificationEmail,
+            onPressed: () => _sendVerificationEmail(context),
             child: Text(
               "Send verification email",
               style: TextStyle(
@@ -44,5 +48,12 @@ class EmailVerificationPageLayout extends StatelessWidget {
     );
   }
 
-  void _sendVerificationEmail() {}
+  void _sendVerificationEmail(BuildContext context) {
+    showProgress(context, 'Sending verification email');
+
+    locator<AuthService>()
+        .sendVerificationEmail()
+        .then((value) => showMessage(context, 'Verification email sent'))
+        .catchError((e) => showMessage(context, e.toString()));
+  }
 }
