@@ -1,0 +1,42 @@
+name: Flutter web CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    
+#     - name: Cache flutter
+#       uses: actions/cache@v1
+#       env:
+#         cache-name: cache-flutter
+#       with:
+#         path: .
+#         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+#         restore-keys: |
+#           ${{ runner.os }}-build-${{ env.cache-name }}-
+#           ${{ runner.os }}-build-
+#           ${{ runner.os }}-
+      
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'beta'
+    - run: flutter config --enable-web
+      
+    - run: flutter pub get
+    - run: flutter build web
+      
+    - name: Commit files
+      run: |
+        git config --local user.email "ashishsumancse@gmail.com"
+        git config --local user.name "Ashish Suman"
+        git subtree push --prefix build/web origin gh-pages
