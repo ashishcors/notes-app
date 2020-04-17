@@ -5,6 +5,7 @@ import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
+import 'package:notesapp/src/widgets/app_logo.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -44,22 +45,7 @@ class _LoginPageLayoutState extends State<LoginPageLayout> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: CircleAvatar(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Q',
-                          style: TextStyle(fontSize: 30),
-                        ),
-                        Text('Note')
-                      ],
-                    ),
-                  ),
-                ),
+                AppLogo(),
                 SizedBox(height: 30),
                 Text('LOGIN', style: TextStyle(fontSize: 20)),
                 SizedBox(height: 30),

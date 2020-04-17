@@ -14,11 +14,11 @@ class LocalStorageService {
     return _instance;
   }
 
-  static const String _keyIsUserLoggedIn = 'KeyIsUserLoggedIn';
+  static const String _keyDarkMode = 'KeyDarkMode';
 
-  bool get isUserLoggedIn => _getFromDisk(_keyIsUserLoggedIn) ?? false;
+  bool get darkMode => _getFromDisk(_keyDarkMode) ?? false;
 
-  set isUserLoggedIn(bool value) => _saveToDisk(_keyIsUserLoggedIn, value);
+  set darkMode(bool value) => _saveToDisk(_keyDarkMode, value);
 
   dynamic _getFromDisk(String key) {
     var value = _preferences.get(key);

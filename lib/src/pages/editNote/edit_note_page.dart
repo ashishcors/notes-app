@@ -32,8 +32,7 @@ class EditNotePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.image),

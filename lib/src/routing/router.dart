@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:notesapp/src/pages/settings/settings_page.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/pages/editNote/edit_note_page.dart';
 import 'package:notesapp/src/pages/emailVerification/email_verification_page.dart';
@@ -23,10 +24,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(ForgotPasswordPage(), settings);
     case emailVerificationRoute:
       return _getPageRoute(EmailVerificationPage(), settings);
-    case addNote:
+    case addNoteRoute:
       return _getPageRoute(EditNotePage(), settings);
-    case editNote:
+    case editNoteRoute:
       return _getPageRoute(EditNotePage(), settings);
+    case settingsRoute:
+      return _getPageRoute(SettingsPage(), settings);
     default:
       return _getPageRoute(SplashPage(), settings);
   }

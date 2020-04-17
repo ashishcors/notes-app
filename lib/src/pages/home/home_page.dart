@@ -7,6 +7,7 @@ import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
+import 'package:notesapp/src/widgets/app_logo.dart';
 
 import '../../locator.dart';
 
@@ -26,7 +27,7 @@ class HomePage extends StatelessWidget {
   void _verifyEmail() async {
     final isEmailVerified = await locator<AuthService>().isEmailVerified();
     if (!isEmailVerified)
-      locator<NavigationService>().navigateTo(emailVerificationRoute);
+      locator<NavigationService>().navigateToClearStack(emailVerificationRoute);
   }
 
   @override
@@ -34,43 +35,53 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => locator<NavigationService>().navigateTo(addNote),
+        onPressed: () => locator<NavigationService>().navigateTo(addNoteRoute),
       ),
       body: SafeArea(child: HomePageLayout()),
+      appBar: AppBar(elevation: 0),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              child: Center(
+                child: AppLogo(),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                locator<NavigationService>().navigateTo(settingsRoute);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Sign out'),
+              onTap: () {
+                _signOut(context);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
-}
 
-class HomePageLayout extends StatelessWidget {
+
   void _signOut(BuildContext context) {
     locator<AuthService>()
         .signOut()
         .then((value) =>
-            locator<NavigationService>().navigateToClearStack(loginRoute))
+        locator<NavigationService>().navigateToClearStack(loginRoute))
         .catchError((e) => showMessage(context, e.toString()));
   }
+}
 
+class HomePageLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () => {},
-              ),
-              IconButton(
-                icon: Icon(Icons.exit_to_app),
-                onPressed: () => _signOut(context),
-              ),
-            ],
-          ),
-          NoteList(),
-        ],
-      ),
+      child: NoteList(),
     );
   }
 }
@@ -126,13 +137,13 @@ class NoteView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () =>
-          locator<NavigationService>().navigateTo(editNote, argument: _note),
+          locator<NavigationService>().navigateTo(editNoteRoute, argument: _note),
       child: Container(
         margin: EdgeInsets.all(8),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           boxShadow: [
             BoxShadow(color: Colors.grey, blurRadius: 2),
           ],

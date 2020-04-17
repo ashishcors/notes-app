@@ -4,6 +4,7 @@ import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
+import 'package:notesapp/src/widgets/app_logo.dart';
 
 class SplashPage extends StatelessWidget {
   SplashPage() {
@@ -14,22 +15,7 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SizedBox(
-          height: 100,
-          width: 100,
-          child: CircleAvatar(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Q',
-                  style: TextStyle(fontSize: 30),
-                ),
-                Text('Note')
-              ],
-            ),
-          ),
-        ),
+        child: AppLogo(),
       ),
     );
   }

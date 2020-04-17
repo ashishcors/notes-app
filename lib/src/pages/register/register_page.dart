@@ -6,6 +6,7 @@ import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
+import 'package:notesapp/src/widgets/app_logo.dart';
 
 import '../../locator.dart';
 
@@ -50,22 +51,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
               children: <Widget>[
                 Text('Register', style: TextStyle(fontSize: 20)),
                 SizedBox(height: 30),
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: CircleAvatar(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Q',
-                          style: TextStyle(fontSize: 30),
-                        ),
-                        Text('Note')
-                      ],
-                    ),
-                  ),
-                ),
+                AppLogo(),
                 SizedBox(height: 30),
                 TextField(
                   controller: _nameTextController,
