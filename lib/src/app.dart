@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/routing/router.dart';
@@ -10,6 +11,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return MaterialApp(
       title: "QNote",
       theme: appThemeLight,
