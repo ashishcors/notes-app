@@ -1,0 +1,7 @@
+/.dart_tool/
+/.idea/
+/android/
+/lib/generated_plugin_registrant.dart
+/.flutter-plugins
+/.flutter-plugins-dependencies
+/.packages
