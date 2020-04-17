@@ -148,7 +148,8 @@ class NoteView extends StatelessWidget {
               softWrap: true,
               style: TextStyle(fontSize: 20),
             ),
-            Text( //Todo: Improve this
+            Text(
+              //Todo: Improve this
               _note.message,
               overflow: TextOverflow.fade,
               softWrap: true,
