@@ -41,4 +41,4 @@ jobs:
         git config --local user.name "Ashish Suman"
         ls
         git add build/web && git commit -m "Initial build/web subtree commit"
-        git subtree push --prefix build/web origin gh-pages --force
+        git push origin `git subtree split --prefix build/web master`:gh-pages --force
