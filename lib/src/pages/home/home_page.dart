@@ -5,9 +5,9 @@ import 'package:notesapp/src/models/note.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
+import 'package:notesapp/src/services/local_storage_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
-import 'package:notesapp/src/utils/ui_utils.dart';
-import 'package:notesapp/src/widgets/app_logo.dart';
+import 'package:notesapp/src/widgets/drawer_layout.dart';
 
 import '../../locator.dart';
 
@@ -38,42 +38,16 @@ class HomePage extends StatelessWidget {
         onPressed: () => locator<NavigationService>().navigateTo(addNoteRoute),
       ),
       body: SafeArea(child: HomePageLayout()),
-      appBar: AppBar(elevation: 0),
+      appBar: AppBar(
+          elevation: 0,
+          title: Text(
+            '${locator<LocalStorageService>().userData?.displayName ?? 'Nameless Fellow'}\'s Notes',
+            style: TextStyle(color: Colors.black),
+          )),
       drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              child: Center(
-                child: AppLogo(),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onTap: () {
-                locator<NavigationService>().navigateTo(settingsRoute);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Sign out'),
-              onTap: () {
-                _signOut(context);
-              },
-            ),
-          ],
-        ),
+        child: DrawerLayout(),
       ),
     );
-  }
-
-
-  void _signOut(BuildContext context) {
-    locator<AuthService>()
-        .signOut()
-        .then((value) =>
-        locator<NavigationService>().navigateToClearStack(loginRoute))
-        .catchError((e) => showMessage(context, e.toString()));
   }
 }
 
@@ -108,10 +82,7 @@ class NoteList extends StatelessWidget {
             default:
               final List<Note> noteList =
                   snapshot.data.documents.map((document) {
-                return Note(
-                    noteId: document['noteId'],
-                    title: document['title'],
-                    message: document['message']);
+                return Note.fromJson(document.data);
               }).toList();
               if (noteList.isEmpty) return new Text('Nothing Here');
               return GridView.builder(
@@ -136,8 +107,8 @@ class NoteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          locator<NavigationService>().navigateTo(editNoteRoute, argument: _note),
+      onTap: () => locator<NavigationService>()
+          .navigateTo(editNoteRoute, argument: _note),
       child: Container(
         margin: EdgeInsets.all(8),
         padding: EdgeInsets.all(8),

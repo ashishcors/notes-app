@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:notesapp/src/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
@@ -14,11 +17,23 @@ class LocalStorageService {
     return _instance;
   }
 
-  static const String _keyDarkMode = 'KeyDarkMode';
+  static const _keyDarkMode = 'KeyDarkMode';
+  static const _keyUserData = 'KeyUserData';
 
   bool get darkMode => _getFromDisk(_keyDarkMode) ?? false;
 
   set darkMode(bool value) => _saveToDisk(_keyDarkMode, value);
+
+  User get userData {
+    try {
+      return User.fromJson(json.decode(_getFromDisk(_keyUserData)));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  set userData(User user) =>
+      _saveToDisk(_keyUserData, json.encode(user.toMap()));
 
   dynamic _getFromDisk(String key) {
     var value = _preferences.get(key);

@@ -16,4 +16,9 @@ class Note {
       'message': message,
     };
   }
+
+  Note.fromJson(Map<String, dynamic> json)
+      : noteId = json['noteId'],
+        title = json['title'],
+        message = json['message'];
 }

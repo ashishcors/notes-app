@@ -25,6 +25,11 @@ class EditNotePage extends StatelessWidget {
           child: NotePageLayout(),
         ),
       ),
+
+      /**
+       * Using a builder for FAB because the we need context from inside
+       * scaffold. Same for delete button.
+       * */
       floatingActionButton: Builder(
         builder: (builderContext) => FloatingActionButton(
           child: Icon(Icons.save),
@@ -38,9 +43,11 @@ class EditNotePage extends StatelessWidget {
             icon: Icon(Icons.image),
             onPressed: () => {},
           ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () => {},
+          Builder(
+            builder: (buildContext) => IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => _deleteNote(buildContext),
+            ),
           ),
         ],
       ),
@@ -56,6 +63,16 @@ class EditNotePage extends StatelessWidget {
         .then((value) => locator<NavigationService>().goBack())
         .catchError((e) => showMessage(context, e.toString()));
   }
+
+  void _deleteNote(BuildContext context) {
+    showProgress(context, 'Deleting note');
+    final userId = locator<AuthService>().firebaseUser.uid;
+
+    locator<DatabaseService>()
+        .deleteNote(userId, _editNoteViewModel.note)
+        .then((value) => locator<NavigationService>().goBack())
+        .catchError((e) => showMessage(context, e.toString()));
+  }
 }
 
 class NotePageLayout extends StatefulWidget {
@@ -64,6 +81,8 @@ class NotePageLayout extends StatefulWidget {
 }
 
 class _NotePageLayoutState extends State<NotePageLayout> {
+  FocusNode _focusNode = FocusNode();
+
   void _handleKeyEvent(RawKeyEvent event) {
     if (event.logicalKey == LogicalKeyboardKey.escape) {
       locator<NavigationService>().goBack();
@@ -74,36 +93,40 @@ class _NotePageLayoutState extends State<NotePageLayout> {
   Widget build(BuildContext context) {
     final editNoteViewModel = Provider.of<EditNoteViewModel>(context);
 
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: Column(
-        children: <Widget>[
-          TextFormField(
-            controller:
-                TextEditingController(text: editNoteViewModel.note.title),
-            onChanged: (text) => editNoteViewModel.setNoteValue(title: text),
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            decoration: InputDecoration.collapsed(hintText: 'Title'),
-            style: TextStyle(
-              fontSize: 25,
-            ),
-          ),
-          Expanded(
-            child: TextFormField(
+    return RawKeyboardListener(
+      focusNode: _focusNode,
+      onKey: _handleKeyEvent,
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          children: <Widget>[
+            TextFormField(
               controller:
-                  TextEditingController(text: editNoteViewModel.note.message),
-              onChanged: (text) =>
-                  editNoteViewModel.setNoteValue(message: text),
+                  TextEditingController(text: editNoteViewModel.note.title),
+              onChanged: (text) => editNoteViewModel.setNoteValue(title: text),
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              decoration: InputDecoration.collapsed(hintText: 'Message'),
+              decoration: InputDecoration.collapsed(hintText: 'Title'),
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 25,
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: TextFormField(
+                controller:
+                    TextEditingController(text: editNoteViewModel.note.message),
+                onChanged: (text) =>
+                    editNoteViewModel.setNoteValue(message: text),
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: InputDecoration.collapsed(hintText: 'Message'),
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
