@@ -6,6 +6,7 @@ import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
 import 'package:notesapp/src/widgets/app_logo.dart';
+import 'package:notesapp/src/widgets/scrollable_centerd_sized_box.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -35,84 +36,75 @@ class _LoginPageLayoutState extends State<LoginPageLayout> {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: Center(
-          child: SizedBox(
-            width: (MediaQuery.of(context).size.width < 600)
-                ? double.infinity
-                : 600,
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                AppLogo(),
-                SizedBox(height: 30),
-                Text('LOGIN', style: TextStyle(fontSize: 20)),
-                SizedBox(height: 30),
-                TextField(
-                  controller: _emailTextController,
-                  decoration: inputFieldDecoration.copyWith(
-                    hintText: 'Email',
-                  ),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: _passwordTextController,
-                  obscureText: true,
-                  decoration: inputFieldDecoration.copyWith(
-                    hintText: 'Password',
-                  ),
-                ),
-                SizedBox(height: 8),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      locator<NavigationService>()
-                          .navigateTo(forgotPasswordRoute);
-                    },
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: MaterialButton(
-                    color: Theme.of(context).accentColor,
-                    onPressed: () => _verifyLogin(),
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text('OR'),
-                SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: MaterialButton(
-                      color: Colors.white,
-                      onPressed: () {
-                        locator<NavigationService>().navigateTo(registerRoute);
-                      },
-                      child: Text(
-                        'CREATE AN ACCOUNT',
-                        style: TextStyle(color: Theme.of(context).accentColor),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+      child: ScrollableCenteredSizedBox(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            AppLogo(),
+            SizedBox(height: 30),
+            Text('LOGIN', style: TextStyle(fontSize: 20)),
+            SizedBox(height: 30),
+            TextField(
+              controller: _emailTextController,
+              decoration: inputFieldDecoration.copyWith(
+                hintText: 'Email',
+              ),
             ),
-          ),
+            SizedBox(height: 8),
+            TextField(
+              controller: _passwordTextController,
+              obscureText: true,
+              decoration: inputFieldDecoration.copyWith(
+                hintText: 'Password',
+              ),
+            ),
+            SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+                  locator<NavigationService>().navigateTo(forgotPasswordRoute);
+                },
+                child: Text(
+                  'Forgot Password?',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: MaterialButton(
+                color: Theme.of(context).accentColor,
+                onPressed: () => _verifyLogin(),
+                child: Text(
+                  'LOGIN',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(height: 8),
+            Text('OR'),
+            SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: MaterialButton(
+                  color: Colors.white,
+                  onPressed: () {
+                    locator<NavigationService>().navigateTo(registerRoute);
+                  },
+                  child: Text(
+                    'CREATE AN ACCOUNT',
+                    style: TextStyle(color: Theme.of(context).accentColor),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

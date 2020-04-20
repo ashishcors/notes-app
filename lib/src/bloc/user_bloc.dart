@@ -10,4 +10,8 @@ class UserBloc extends ChangeNotifier {
     _user = user;
     notifyListeners();
   }
+
+  void setUser(User user) {
+    _user = user;
+  }
 }

@@ -8,6 +8,7 @@ import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
 import 'package:notesapp/src/widgets/app_logo.dart';
+import 'package:notesapp/src/widgets/scrollable_centerd_sized_box.dart';
 
 import '../../locator.dart';
 
@@ -40,57 +41,49 @@ class _RegisterLayoutState extends State<RegisterLayout> {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: Center(
-          child: SizedBox(
-            width: (MediaQuery.of(context).size.width < 600)
-                ? double.infinity
-                : 600,
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Register', style: TextStyle(fontSize: 20)),
-                SizedBox(height: 30),
-                AppLogo(),
-                SizedBox(height: 30),
-                TextField(
-                  controller: _nameTextController,
-                  decoration: inputFieldDecoration.copyWith(
-                    hintText: 'Name',
-                  ),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: _emailTextController,
-                  decoration: inputFieldDecoration.copyWith(
-                    hintText: 'Email',
-                  ),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: _passwordTextController,
-                  obscureText: true,
-                  decoration: inputFieldDecoration.copyWith(
-                    hintText: 'Password',
-                  ),
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: MaterialButton(
-                    color: Theme.of(context).accentColor,
-                    onPressed: () => _registerUser(),
-                    child: Text(
-                      'REGISTER',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
+      child: ScrollableCenteredSizedBox(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('Register', style: TextStyle(fontSize: 20)),
+            SizedBox(height: 30),
+            AppLogo(),
+            SizedBox(height: 30),
+            TextField(
+              controller: _nameTextController,
+              decoration: inputFieldDecoration.copyWith(
+                hintText: 'Name',
+              ),
             ),
-          ),
+            SizedBox(height: 8),
+            TextField(
+              controller: _emailTextController,
+              decoration: inputFieldDecoration.copyWith(
+                hintText: 'Email',
+              ),
+            ),
+            SizedBox(height: 8),
+            TextField(
+              controller: _passwordTextController,
+              obscureText: true,
+              decoration: inputFieldDecoration.copyWith(
+                hintText: 'Password',
+              ),
+            ),
+            SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: MaterialButton(
+                color: Theme.of(context).accentColor,
+                onPressed: () => _registerUser(),
+                child: Text(
+                  'REGISTER',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -105,11 +98,10 @@ class _RegisterLayoutState extends State<RegisterLayout> {
         .registerUser(email, password)
         .then((value) => locator<DatabaseService>().addOrUpdateUser(
               User(
-                userId: value.uid,
-                displayName: name,
-                emailId: email,
-                userPreferences: UserPreferences()
-              ),
+                  userId: value.uid,
+                  displayName: name,
+                  emailId: email,
+                  userPreferences: UserPreferences()),
             ))
         .then((value) =>
             {locator<NavigationService>().navigateToClearStack(homeRoute)})

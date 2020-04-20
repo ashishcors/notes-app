@@ -35,8 +35,8 @@ class HomePage extends StatelessWidget {
   }
 
   void _fetchUserData(BuildContext context) async {
-    Provider.of<UserBloc>(context, listen: false).user =
-        locator<LocalStorageService>().userData;
+    Provider.of<UserBloc>(context, listen: false)
+        .setUser(locator<LocalStorageService>().userData);
     final userId = locator<AuthService>().firebaseUser.uid;
     locator<DatabaseService>().getUser(userId).then((value) {
       locator<LocalStorageService>().userData = User.fromJson(value.data);
@@ -61,8 +61,9 @@ class HomePage extends StatelessWidget {
         title: Consumer<UserBloc>(
           builder: (_, userBloc, child) => Text(
             '${userBloc.user?.displayName ?? 'Nameless Fellow'}\'s Notes',
-            style:
-                TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyText1.color,
+            ),
           ),
         ),
         actions: <Widget>[
