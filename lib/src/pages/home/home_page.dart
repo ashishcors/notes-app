@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:notesapp/src/bloc/theme_bloc.dart';
+import 'package:notesapp/src/bloc/user_bloc.dart';
 import 'package:notesapp/src/models/note.dart';
+import 'package:notesapp/src/models/user.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/local_storage_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/widgets/drawer_layout.dart';
+import 'package:provider/provider.dart';
 
 import '../../locator.dart';
 
@@ -30,8 +34,22 @@ class HomePage extends StatelessWidget {
       locator<NavigationService>().navigateToClearStack(emailVerificationRoute);
   }
 
+  void _fetchUserData(BuildContext context) async {
+    Provider.of<UserBloc>(context, listen: false).user =
+        locator<LocalStorageService>().userData;
+    final userId = locator<AuthService>().firebaseUser.uid;
+    locator<DatabaseService>().getUser(userId).then((value) {
+      locator<LocalStorageService>().userData = User.fromJson(value.data);
+      Provider.of<UserBloc>(context, listen: false).user =
+          locator<LocalStorageService>().userData;
+      Provider.of<ThemeBloc>(context, listen: false).darkMode =
+          locator<LocalStorageService>().userPreferences.darkModeEnabled;
+    }).catchError((_) => {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    _fetchUserData(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -39,11 +57,21 @@ class HomePage extends StatelessWidget {
       ),
       body: SafeArea(child: HomePageLayout()),
       appBar: AppBar(
-          elevation: 0,
-          title: Text(
-            '${locator<LocalStorageService>().userData?.displayName ?? 'Nameless Fellow'}\'s Notes',
-            style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
-          )),
+        elevation: 0,
+        title: Consumer<UserBloc>(
+          builder: (_, userBloc, child) => Text(
+            '${userBloc.user?.displayName ?? 'Nameless Fellow'}\'s Notes',
+            style:
+                TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () => _fetchUserData(context),
+            icon: Icon(Icons.refresh),
+          )
+        ],
+      ),
       drawer: Drawer(
         child: DrawerLayout(),
       ),
@@ -78,23 +106,30 @@ class NoteList extends StatelessWidget {
           if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return new Text('Loading...');
+              return Center(child: new Text('Loading...'));
             default:
               final List<Note> noteList =
                   snapshot.data.documents.map((document) {
                 return Note.fromJson(document.data);
               }).toList();
-              if (noteList.isEmpty) return SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.sentiment_dissatisfied, size:40,),
-                    Text('Nothing Here', style: TextStyle(fontSize: 30),),
-                  ],
-                ),
-              );
+              if (noteList.isEmpty)
+                return SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.sentiment_dissatisfied,
+                        size: 40,
+                      ),
+                      Text(
+                        'Nothing Here',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    ],
+                  ),
+                );
               return GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

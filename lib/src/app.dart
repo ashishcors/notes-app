@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notesapp/src/bloc/theme_bloc.dart';
+import 'package:notesapp/src/bloc/user_bloc.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/routing/router.dart';
@@ -25,8 +26,11 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     getCurrentAppTheme();
-    return ChangeNotifierProvider(
-      create: (_) => _themeBloc,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => _themeBloc),
+        ChangeNotifierProvider(create: (_) => UserBloc()),
+      ],
       child: Consumer<ThemeBloc>(
         builder: (buildContext, value, child) {
           return MaterialApp(
