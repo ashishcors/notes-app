@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
           elevation: 0,
           title: Text(
             '${locator<LocalStorageService>().userData?.displayName ?? 'Nameless Fellow'}\'s Notes',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
           )),
       drawer: Drawer(
         child: DrawerLayout(),
@@ -84,7 +84,17 @@ class NoteList extends StatelessWidget {
                   snapshot.data.documents.map((document) {
                 return Note.fromJson(document.data);
               }).toList();
-              if (noteList.isEmpty) return new Text('Nothing Here');
+              if (noteList.isEmpty) return SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.sentiment_dissatisfied, size:40,),
+                    Text('Nothing Here', style: TextStyle(fontSize: 30),),
+                  ],
+                ),
+              );
               return GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

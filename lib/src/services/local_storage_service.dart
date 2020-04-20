@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:notesapp/src/models/user.dart';
+import 'package:notesapp/src/models/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
@@ -17,23 +18,42 @@ class LocalStorageService {
     return _instance;
   }
 
-  static const _keyDarkMode = 'KeyDarkMode';
   static const _keyUserData = 'KeyUserData';
-
-  bool get darkMode => _getFromDisk(_keyDarkMode) ?? false;
-
-  set darkMode(bool value) => _saveToDisk(_keyDarkMode, value);
+  static const _keyUserPreferences = 'KeyUserPreferences';
 
   User get userData {
     try {
-      return User.fromJson(json.decode(_getFromDisk(_keyUserData)));
+      return User.fromJson(json.decode(_getFromDisk(_keyUserData)))
+        ..userPreferences = userPreferences;
     } catch (_) {
       return null;
     }
   }
 
-  set userData(User user) =>
-      _saveToDisk(_keyUserData, json.encode(user.toMap()));
+  set userData(User user) {
+    _saveToDisk(_keyUserData, json.encode(user.toMap()));
+    if (user.userPreferences != null)
+      _saveToDisk(
+        _keyUserPreferences,
+        json.encode(user.userPreferences.toMap()),
+      );
+  }
+
+  UserPreferences get userPreferences {
+    try {
+      return UserPreferences.fromJson(
+          json.decode(_getFromDisk(_keyUserPreferences)));
+    } catch (_) {
+      return UserPreferences();
+    }
+  }
+
+  set userPreferences(UserPreferences preferences) =>
+      _saveToDisk(_keyUserPreferences, json.encode(preferences.toMap()));
+
+  void clearAllData(){
+    _preferences.clear();
+  }
 
   dynamic _getFromDisk(String key) {
     var value = _preferences.get(key);

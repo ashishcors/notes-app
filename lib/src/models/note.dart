@@ -1,12 +1,14 @@
+import 'package:flutter/cupertino.dart';
+
 class Note {
   String noteId;
   String title = "";
   String message = "";
 
   Note({
-    this.noteId,
-    this.title,
-    this.message,
+    @required this.noteId,
+    this.title = "",
+    this.message = "",
   });
 
   Map<String, dynamic> toMap() {

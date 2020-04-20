@@ -8,7 +8,9 @@ class ThemeBloc extends ChangeNotifier {
   bool get darkMode => _darkMode;
 
   set darkMode(bool isDarkMode) {
-    locator<LocalStorageService>().darkMode = isDarkMode;
+    locator<LocalStorageService>().userPreferences =
+        locator<LocalStorageService>().userPreferences
+          ..darkModeEnabled = isDarkMode;
     _darkMode = isDarkMode;
     notifyListeners();
   }

@@ -1,12 +1,17 @@
+import 'package:flutter/foundation.dart';
+import 'package:notesapp/src/models/user_preferences.dart';
+
 class User {
-  var userId;
-  var displayName;
-  var emailId;
+  String userId;
+  String displayName;
+  String emailId;
+  UserPreferences userPreferences;
 
   User({
-    this.userId,
-    this.displayName,
-    this.emailId,
+    @required this.userId,
+    @required this.displayName,
+    @required this.emailId,
+    this.userPreferences = null,
   });
 
   Map<String, dynamic> toMap() {
@@ -14,11 +19,13 @@ class User {
       'userId': userId,
       'displayName': displayName,
       'emailId': emailId,
+      'userPreferences': userPreferences.toMap()
     };
   }
 
   User.fromJson(Map<String, dynamic> json)
       : userId = json['userId'],
         displayName = json['displayName'],
-        emailId = json['emailId'];
+        emailId = json['emailId'],
+        userPreferences = UserPreferences.fromJson(json['userPreferences']);
 }

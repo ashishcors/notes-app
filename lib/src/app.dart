@@ -18,7 +18,8 @@ class _AppState extends State<App> {
   final _themeBloc = ThemeBloc();
 
   void getCurrentAppTheme() async {
-    _themeBloc.darkMode = locator<LocalStorageService>().darkMode;
+    _themeBloc.darkMode =
+        locator<LocalStorageService>().userPreferences.darkModeEnabled;
   }
 
   @override

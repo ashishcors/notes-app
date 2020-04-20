@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:notesapp/src/models/user.dart';
+import 'package:notesapp/src/models/user_preferences.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
@@ -101,21 +102,21 @@ class _RegisterLayoutState extends State<RegisterLayout> {
     String password = _passwordTextController.text.trim();
     showProgress(context, 'Creating Account...');
     locator<AuthService>()
-        .registerUser(name, email, password)
+        .registerUser(email, password)
         .then((value) => locator<DatabaseService>().addOrUpdateUser(
               User(
                 userId: value.uid,
                 displayName: name,
                 emailId: email,
+                userPreferences: UserPreferences()
               ),
             ))
-        .then((value) => {
-              locator<NavigationService>().navigateToClearStack(homeRoute)
-            })
+        .then((value) =>
+            {locator<NavigationService>().navigateToClearStack(homeRoute)})
         .catchError((e) => {
               (e is PlatformException)
                   ? showMessage(context, e.message)
-                  : showMessage(context, 'An error has occurred.')
+                  : showMessage(context, e.toString())
             });
   }
 }
