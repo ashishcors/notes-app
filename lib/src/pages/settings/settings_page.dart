@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:notesapp/src/bloc/theme_bloc.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/services/local_storage_service.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -26,7 +28,7 @@ class _SettingsPageLayoutState extends State<SettingsPageLayout> {
       onChanged: (bool value) {
         setState(
           () {
-            locator<LocalStorageService>().darkMode = value;
+            Provider.of<ThemeBloc>(context, listen: false).darkMode = value;
           },
         );
       },
