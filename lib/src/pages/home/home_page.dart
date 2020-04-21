@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:notesapp/src/bloc/theme_bloc.dart';
-import 'package:notesapp/src/bloc/user_bloc.dart';
 import 'package:notesapp/src/models/note.dart';
 import 'package:notesapp/src/models/user.dart';
 import 'package:notesapp/src/routing/route_names.dart';
@@ -10,6 +8,8 @@ import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/local_storage_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
+import 'package:notesapp/src/viewModel/theme_view_model.dart';
+import 'package:notesapp/src/viewModel/user_view_model.dart';
 import 'package:notesapp/src/widgets/drawer_layout.dart';
 import 'package:provider/provider.dart';
 
@@ -35,14 +35,14 @@ class HomePage extends StatelessWidget {
   }
 
   void _fetchUserData(BuildContext context) async {
-    Provider.of<UserBloc>(context, listen: false)
+    Provider.of<UserViewModel>(context, listen: false)
         .setUser(locator<LocalStorageService>().userData);
     final userId = locator<AuthService>().firebaseUser.uid;
     locator<DatabaseService>().getUser(userId).then((value) {
       locator<LocalStorageService>().userData = User.fromJson(value.data);
-      Provider.of<UserBloc>(context, listen: false).user =
+      Provider.of<UserViewModel>(context, listen: false).user =
           locator<LocalStorageService>().userData;
-      Provider.of<ThemeBloc>(context, listen: false).darkMode =
+      Provider.of<ThemeViewModel>(context, listen: false).darkMode =
           locator<LocalStorageService>().userPreferences.darkModeEnabled;
     }).catchError((_) => {});
   }
@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
       body: SafeArea(child: HomePageLayout()),
       appBar: AppBar(
         elevation: 0,
-        title: Consumer<UserBloc>(
+        title: Consumer<UserViewModel>(
           builder: (_, userBloc, child) => Text(
             '${userBloc.user?.displayName ?? 'Nameless Fellow'}\'s Notes',
             style: TextStyle(

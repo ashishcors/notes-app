@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:notesapp/src/models/note.dart';
 import 'package:notesapp/src/models/user.dart';
 import 'package:notesapp/src/models/user_preferences.dart';
 import 'package:notesapp/src/routing/route_names.dart';
@@ -103,8 +104,13 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                   emailId: email,
                   userPreferences: UserPreferences()),
             ))
-        .then((value) =>
-            {locator<NavigationService>().navigateToClearStack(homeRoute)})
+        .then((value) => {
+              locator<DatabaseService>().addOrUpdateNote(
+                locator<AuthService>().firebaseUser.uid,
+                welcomeNote(),
+              ),
+              locator<NavigationService>().navigateToClearStack(homeRoute)
+            })
         .catchError((e) => {
               (e is PlatformException)
                   ? showMessage(context, e.message)

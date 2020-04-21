@@ -24,3 +24,12 @@ class Note {
         title = json['title'],
         message = json['message'];
 }
+
+Note welcomeNote() {
+  return Note(
+      noteId: DateTime.now().millisecondsSinceEpoch.toString(),
+      title: 'Welome to Notes App',
+      message: 'This is app is made using flutter. '
+          'The source code for this project can be found at '
+          'https://github.com/AshishSumanCSE/notes-app');
+}

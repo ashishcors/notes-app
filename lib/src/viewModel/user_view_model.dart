@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:notesapp/src/models/user.dart';
 
-class UserBloc extends ChangeNotifier {
+class UserViewModel extends ChangeNotifier {
   User _user;
 
   User get user => _user;

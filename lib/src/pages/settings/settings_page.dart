@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:notesapp/src/bloc/theme_bloc.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/local_storage_service.dart';
+import 'package:notesapp/src/viewModel/theme_view_model.dart';
 import 'package:notesapp/src/widgets/scrollable_centerd_sized_box.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +45,7 @@ class _SettingsPageLayoutState extends State<SettingsPageLayout> {
           onChanged: (bool value) {
             setState(
               () {
-                Provider.of<ThemeBloc>(context, listen: false).darkMode = value;
+                Provider.of<ThemeViewModel>(context, listen: false).darkMode = value;
                 locator<DatabaseService>()
                     .addOrUpdateUser(locator<LocalStorageService>().userData)
                     .catchError((_) => {});
