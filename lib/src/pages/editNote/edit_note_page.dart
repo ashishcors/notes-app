@@ -24,10 +24,9 @@ class EditNotePage extends StatelessWidget {
         ),
       ),
 
-      /**
-       * Using a builder for FAB because the we need context from inside
-       * scaffold. Same for delete button.
-       * */
+
+       /// Using a builder for floatingActionButton because the we need context
+       /// from inside scaffold. Same for delete button.
       floatingActionButton: Builder(
         builder: (builderContext) => FloatingActionButton(
           child: Icon(Icons.save),
