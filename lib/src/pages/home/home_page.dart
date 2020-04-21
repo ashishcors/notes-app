@@ -6,7 +6,7 @@ import 'package:notesapp/src/models/user.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
-import 'package:notesapp/src/services/local_storage_service.dart';
+import 'package:notesapp/src/services/prefs_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/viewModel/theme_view_model.dart';
 import 'package:notesapp/src/viewModel/user_view_model.dart';
@@ -36,14 +36,14 @@ class HomePage extends StatelessWidget {
 
   void _fetchUserData(BuildContext context) async {
     Provider.of<UserViewModel>(context, listen: false)
-        .setUser(locator<LocalStorageService>().userData);
+        .setUser(locator<PrefsService>().userData);
     final userId = locator<AuthService>().firebaseUser.uid;
     locator<DatabaseService>().getUser(userId).then((value) {
-      locator<LocalStorageService>().userData = User.fromJson(value.data);
+      locator<PrefsService>().userData = User.fromJson(value.data);
       Provider.of<UserViewModel>(context, listen: false).user =
-          locator<LocalStorageService>().userData;
+          locator<PrefsService>().userData;
       Provider.of<ThemeViewModel>(context, listen: false).darkMode =
-          locator<LocalStorageService>().userPreferences.darkModeEnabled;
+          locator<PrefsService>().userPreferences.darkModeEnabled;
     }).catchError((_) => {});
   }
 

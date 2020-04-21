@@ -3,24 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/routing/router.dart';
-import 'package:notesapp/src/services/local_storage_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
+import 'package:notesapp/src/services/prefs_service.dart';
 import 'package:notesapp/src/utils/app_themes.dart';
 import 'package:notesapp/src/viewModel/theme_view_model.dart';
 import 'package:notesapp/src/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
 
-class App extends StatefulWidget {
-  @override
-  _AppState createState() => _AppState();
-}
-
-class _AppState extends State<App> {
+class App extends StatelessWidget {
   final _themeViewModel = ThemeViewModel();
 
   void getCurrentAppTheme() async {
-    _themeViewModel.darkMode =
-        locator<LocalStorageService>().userPreferences.darkModeEnabled;
+    var _prefsService = await locator.getAsync<PrefsService>();
+    _themeViewModel.darkMode = _prefsService.userPreferences.darkModeEnabled;
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notesapp/src/locator.dart';
-import 'package:notesapp/src/services/local_storage_service.dart';
+import 'package:notesapp/src/services/prefs_service.dart';
 
 class ThemeViewModel extends ChangeNotifier {
   bool _darkMode = false;
@@ -8,8 +8,8 @@ class ThemeViewModel extends ChangeNotifier {
   bool get darkMode => _darkMode;
 
   set darkMode(bool isDarkMode) {
-    locator<LocalStorageService>().userPreferences =
-        locator<LocalStorageService>().userPreferences
+    locator<PrefsService>().userPreferences =
+        locator<PrefsService>().userPreferences
           ..darkModeEnabled = isDarkMode;
     _darkMode = isDarkMode;
     notifyListeners();

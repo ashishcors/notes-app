@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
-import 'package:notesapp/src/services/local_storage_service.dart';
+import 'package:notesapp/src/services/prefs_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/widgets/app_logo.dart';
 
@@ -24,7 +24,7 @@ class SplashPage extends StatelessWidget {
     isLoggedIn
         ? locator<NavigationService>().navigateToClearStack(homeRoute)
         : {
-            locator<LocalStorageService>().clearAllData(),
+            locator<PrefsService>().clearAllData(),
             locator<NavigationService>().navigateToClearStack(loginRoute)
           };
   }

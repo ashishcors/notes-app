@@ -4,13 +4,13 @@ import 'package:notesapp/src/models/user.dart';
 import 'package:notesapp/src/models/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalStorageService {
-  static LocalStorageService _instance;
+class PrefsService {
+  static PrefsService _instance;
   static SharedPreferences _preferences;
 
-  static Future<LocalStorageService> getInstance() async {
+  static Future<PrefsService> getInstance() async {
     if (_instance == null) {
-      _instance = LocalStorageService();
+      _instance = PrefsService();
     }
     if (_preferences == null) {
       _preferences = await SharedPreferences.getInstance();

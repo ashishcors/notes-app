@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
-import 'package:notesapp/src/services/local_storage_service.dart';
+import 'package:notesapp/src/services/prefs_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
 
@@ -40,7 +40,7 @@ class DrawerLayout extends StatelessWidget {
   void _signOut(BuildContext context) {
     locator<AuthService>().signOut().then((value) {
       locator<NavigationService>().navigateToClearStack(loginRoute);
-      locator<LocalStorageService>().clearAllData();
+      locator<PrefsService>().clearAllData();
     }).catchError((e) => showMessage(context, e.toString()));
   }
 }
