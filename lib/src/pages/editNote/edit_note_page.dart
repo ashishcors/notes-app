@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 class EditNotePage extends StatelessWidget {
   final _editNoteViewModel = EditNoteViewModel();
+
   @override
   Widget build(BuildContext context) {
     final Note _note =
@@ -24,9 +25,8 @@ class EditNotePage extends StatelessWidget {
         ),
       ),
 
-
-       /// Using a builder for floatingActionButton because the we need context
-       /// from inside scaffold. Same for delete button.
+      /// Using a builder for floatingActionButton because the we need context
+      /// from inside scaffold. Same for delete button.
       floatingActionButton: Builder(
         builder: (builderContext) => FloatingActionButton(
           child: Icon(Icons.save),
@@ -72,13 +72,8 @@ class EditNotePage extends StatelessWidget {
   }
 }
 
-class NotePageLayout extends StatefulWidget {
-  @override
-  _NotePageLayoutState createState() => _NotePageLayoutState();
-}
-
-class _NotePageLayoutState extends State<NotePageLayout> {
-  FocusNode _focusNode = FocusNode();
+class NotePageLayout extends StatelessWidget {
+  final _focusNode = FocusNode();
 
   void _handleKeyEvent(RawKeyEvent event) {
     if (event.logicalKey == LogicalKeyboardKey.escape) {
