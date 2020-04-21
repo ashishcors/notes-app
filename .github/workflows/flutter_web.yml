@@ -2,7 +2,7 @@ name: Flutter web CI
 
 on:
   push:
-    branches: [ release ]
+    branches: [ master ]
 
 jobs:
   build:
