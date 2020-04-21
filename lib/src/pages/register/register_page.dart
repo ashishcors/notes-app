@@ -9,6 +9,7 @@ import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
 import 'package:notesapp/src/widgets/app_logo.dart';
+import 'package:notesapp/src/widgets/custom_text_field.dart';
 import 'package:notesapp/src/widgets/scrollable_centerd_sized_box.dart';
 
 import '../../locator.dart';
@@ -34,12 +35,6 @@ class _RegisterLayoutState extends State<RegisterLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final inputFieldDecoration = InputDecoration(
-        contentPadding: EdgeInsets.all(15),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ));
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ScrollableCenteredSizedBox(
@@ -50,26 +45,27 @@ class _RegisterLayoutState extends State<RegisterLayout> {
             SizedBox(height: 30),
             AppLogo(),
             SizedBox(height: 30),
-            TextField(
+            CustomTextField(
               controller: _nameTextController,
-              decoration: inputFieldDecoration.copyWith(
-                hintText: 'Name',
-              ),
+              labelText: 'Name',
+              textInputAction: TextInputAction.next,
+              onSubmitted: (_) => FocusScope.of(context).nextFocus(),
             ),
             SizedBox(height: 8),
-            TextField(
+            CustomTextField(
               controller: _emailTextController,
-              decoration: inputFieldDecoration.copyWith(
-                hintText: 'Email',
-              ),
+              labelText: 'Email',
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              onSubmitted: (_) => FocusScope.of(context).nextFocus(),
             ),
             SizedBox(height: 8),
-            TextField(
+            CustomTextField(
               controller: _passwordTextController,
               obscureText: true,
-              decoration: inputFieldDecoration.copyWith(
-                hintText: 'Password',
-              ),
+              labelText: 'Password',
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _registerUser(),
             ),
             SizedBox(height: 20),
             SizedBox(

@@ -23,6 +23,15 @@ class Note {
       : noteId = json['noteId'],
         title = json['title'],
         message = json['message'];
+
+  Note.newEmptyNote()
+      : noteId = DateTime.now().millisecondsSinceEpoch.toString();
+
+  //Todo: find a better way.
+  Note.copy(Note note)
+      : noteId = note.noteId,
+        title = note.title,
+        message = note.message;
 }
 
 Note welcomeNote() {

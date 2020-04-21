@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:notesapp/src/locator.dart';
@@ -12,11 +11,10 @@ import 'package:provider/provider.dart';
 
 class EditNotePage extends StatelessWidget {
   final _editNoteViewModel = EditNoteViewModel();
-
   @override
   Widget build(BuildContext context) {
-    final Note _note = ModalRoute.of(context).settings.arguments ??
-        Note(noteId: DateTime.now().millisecondsSinceEpoch.toString());
+    final Note _note =
+        ModalRoute.of(context).settings.arguments ?? Note.newEmptyNote();
     _editNoteViewModel.setNote(_note);
     return Scaffold(
       body: SafeArea(
@@ -92,7 +90,7 @@ class _NotePageLayoutState extends State<NotePageLayout> {
   @override
   Widget build(BuildContext context) {
     final editNoteViewModel = Provider.of<EditNoteViewModel>(context);
-
+    FocusScope.of(context).requestFocus(_focusNode);
     return RawKeyboardListener(
       focusNode: _focusNode,
       onKey: _handleKeyEvent,
@@ -100,7 +98,7 @@ class _NotePageLayoutState extends State<NotePageLayout> {
         padding: EdgeInsets.all(8),
         child: Column(
           children: <Widget>[
-            TextFormField(
+            TextField(
               controller:
                   TextEditingController(text: editNoteViewModel.note.title),
               onChanged: (text) => editNoteViewModel.setNoteValue(title: text),
@@ -112,7 +110,7 @@ class _NotePageLayoutState extends State<NotePageLayout> {
               ),
             ),
             Expanded(
-              child: TextFormField(
+              child: TextField(
                 controller:
                     TextEditingController(text: editNoteViewModel.note.message),
                 onChanged: (text) =>

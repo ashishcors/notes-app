@@ -6,6 +6,7 @@ import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/utils/ui_utils.dart';
 import 'package:notesapp/src/widgets/app_logo.dart';
+import 'package:notesapp/src/widgets/custom_text_field.dart';
 import 'package:notesapp/src/widgets/scrollable_centerd_sized_box.dart';
 
 class LoginPage extends StatelessWidget {
@@ -28,12 +29,6 @@ class _LoginPageLayoutState extends State<LoginPageLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final inputFieldDecoration = InputDecoration(
-        contentPadding: EdgeInsets.all(15),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ));
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ScrollableCenteredSizedBox(
@@ -44,19 +39,20 @@ class _LoginPageLayoutState extends State<LoginPageLayout> {
             SizedBox(height: 30),
             Text('LOGIN', style: TextStyle(fontSize: 20)),
             SizedBox(height: 30),
-            TextField(
+            CustomTextField(
               controller: _emailTextController,
-              decoration: inputFieldDecoration.copyWith(
-                hintText: 'Email',
-              ),
+              labelText: 'Email',
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              onSubmitted: (_) => FocusScope.of(context).nextFocus(),
             ),
             SizedBox(height: 8),
-            TextField(
+            CustomTextField(
               controller: _passwordTextController,
               obscureText: true,
-              decoration: inputFieldDecoration.copyWith(
-                hintText: 'Password',
-              ),
+              labelText: 'Password',
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _verifyLogin(),
             ),
             SizedBox(height: 8),
             Align(

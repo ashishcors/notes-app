@@ -6,8 +6,8 @@ import 'package:notesapp/src/models/user.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
-import 'package:notesapp/src/services/prefs_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
+import 'package:notesapp/src/services/prefs_service.dart';
 import 'package:notesapp/src/viewModel/theme_view_model.dart';
 import 'package:notesapp/src/viewModel/user_view_model.dart';
 import 'package:notesapp/src/widgets/drawer_layout.dart';
@@ -153,8 +153,15 @@ class NoteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => locator<NavigationService>()
-          .navigateTo(editNoteRoute, argument: _note),
+      onTap: () => {
+        locator<NavigationService>().navigateTo(
+          editNoteRoute,
+
+          /// Creating a copy because reference of note is passed by default.
+          /// And since we'll be modifying this, we want value, not reference.
+          argument: Note.copy(_note),
+        )
+      },
       child: Container(
         margin: EdgeInsets.all(8),
         padding: EdgeInsets.all(8),
