@@ -8,12 +8,18 @@ import 'package:notesapp/src/utils/ui_utils.dart';
 import 'package:notesapp/src/widgets/app_logo.dart';
 import 'package:notesapp/src/widgets/custom_text_field.dart';
 import 'package:notesapp/src/widgets/scrollable_centerd_sized_box.dart';
+import 'package:notesapp/src/widgets/shatter_glass.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LoginPageLayout(),
+      body: Stack(
+        children: <Widget>[
+          ShatterGlass(),
+          LoginPageLayout(),
+        ],
+      ),
     );
   }
 }
