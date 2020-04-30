@@ -1,17 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notesapp/src/blocs/bloc.dart';
 import 'package:notesapp/src/models/note.dart';
 import 'package:notesapp/src/models/user.dart';
+import 'package:notesapp/src/repositories/notes_repository.dart';
 import 'package:notesapp/src/routing/route_names.dart';
 import 'package:notesapp/src/services/auth_service.dart';
 import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 import 'package:notesapp/src/services/prefs_service.dart';
-import 'package:notesapp/src/viewModel/theme_view_model.dart';
-import 'package:notesapp/src/viewModel/user_view_model.dart';
 import 'package:notesapp/src/widgets/drawer_layout.dart';
-import 'package:provider/provider.dart';
 
 import '../../locator.dart';
 
@@ -35,15 +34,10 @@ class HomePage extends StatelessWidget {
   }
 
   void _fetchUserData(BuildContext context) async {
-    Provider.of<UserViewModel>(context, listen: false)
-        .setUser(locator<PrefsService>().userData);
+    final prefs = locator<PrefsService>();
     final userId = locator<AuthService>().firebaseUser.uid;
     locator<DatabaseService>().getUser(userId).then((value) {
-      locator<PrefsService>().userData = User.fromJson(value.data);
-      Provider.of<UserViewModel>(context, listen: false).user =
-          locator<PrefsService>().userData;
-      Provider.of<ThemeViewModel>(context, listen: false).darkMode =
-          locator<PrefsService>().userPreferences.darkModeEnabled;
+      prefs.userData = User.fromJson(value.data);
     }).catchError((_) => {});
   }
 
@@ -55,15 +49,18 @@ class HomePage extends StatelessWidget {
         child: Icon(Icons.add),
         onPressed: () => locator<NavigationService>().navigateTo(addNoteRoute),
       ),
-      body: SafeArea(child: HomePageLayout()),
+      body: SafeArea(
+        child: BlocProvider(
+          create: (_) => NotesBloc(NotesRepository()),
+          child: HomePageLayout(),
+        ),
+      ),
       appBar: AppBar(
         elevation: 0,
-        title: Consumer<UserViewModel>(
-          builder: (_, userBloc, child) => Text(
-            '${userBloc.user?.displayName ?? 'Nameless Fellow'}\'s Notes',
-            style: TextStyle(
-              color: Theme.of(context).textTheme.bodyText1.color,
-            ),
+        title: Text(
+          '${true ?? 'Nameless Fellow'}\'s Notes',
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyText1.color,
           ),
         ),
         actions: <Widget>[
@@ -89,7 +86,12 @@ class HomePageLayout extends StatelessWidget {
   }
 }
 
-class NoteList extends StatelessWidget {
+class NoteList extends StatefulWidget {
+  @override
+  _NoteListState createState() => _NoteListState();
+}
+
+class _NoteListState extends State<NoteList> {
   int _crossAxisCount(BuildContext context) {
     final screenSize = MediaQuery.of(context).size.width;
     if (screenSize > 1000) return 5;
@@ -99,49 +101,53 @@ class NoteList extends StatelessWidget {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    BlocProvider.of<NotesBloc>(context).add(GetNotes());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final userId = locator<AuthService>().firebaseUser.uid;
-    return StreamBuilder<QuerySnapshot>(
-        stream: locator<DatabaseService>().getNotes(userId),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: new Text('Loading...'));
-            default:
-              final List<Note> noteList =
-                  snapshot.data.documents.map((document) {
-                return Note.fromJson(document.data);
-              }).toList();
-              if (noteList.isEmpty)
-                return SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.sentiment_dissatisfied,
-                        size: 40,
-                      ),
-                      Text(
-                        'Nothing Here',
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ],
+    return BlocBuilder<NotesBloc, NotesState>(
+      builder: (context, state) {
+        if (state is NotesInitial) {
+          return Center(child: new Text('Loading...'));
+        } else if (state is NotesLoading) {
+          return Center(child: new Text('Loading...'));
+        } else if (state is NotesLoaded) {
+          if (state.noteList.isEmpty)
+            return SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.sentiment_dissatisfied,
+                    size: 40,
                   ),
-                );
-              return GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: _crossAxisCount(context),
-                ),
-                shrinkWrap: true,
-                itemBuilder: (context, i) => NoteView(noteList[i]),
-                itemCount: noteList.length,
-              );
-          }
-        });
+                  Text(
+                    'Nothing Here',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ],
+              ),
+            );
+          return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: _crossAxisCount(context),
+            ),
+            shrinkWrap: true,
+            itemBuilder: (context, i) => NoteView(state.noteList[i]),
+            itemCount: state.noteList.length,
+          );
+        } else if (state is NotesError) {
+          return Text('Error: ${state.message}');
+        }
+        return null;
+      },
+    );
   }
 }
 
