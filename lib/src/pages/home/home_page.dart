@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notesapp/src/blocs/bloc.dart';
+import 'package:notesapp/src/blocs/notes/notes_bloc.dart';
+import 'package:notesapp/src/blocs/notes/notes_event.dart';
+import 'package:notesapp/src/blocs/notes/notes_state.dart';
 import 'package:notesapp/src/models/note.dart';
 import 'package:notesapp/src/models/user.dart';
 import 'package:notesapp/src/repositories/notes_repository.dart';

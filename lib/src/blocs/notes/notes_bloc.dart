@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:notesapp/src/repositories/notes_repository.dart';
 
-import './bloc.dart';
+import 'notes_event.dart';
+import 'notes_state.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
   final NotesRepository repository;

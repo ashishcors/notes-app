@@ -20,7 +20,14 @@ class NotesRepository {
 
   Stream<List<Note>> fetchNotes() async* {
     yield* _databaseService.getNotes(_prefsService.userData.userId).map(
-        (event) => event.documents.map((e) =>
-            Note.fromJson(e.data)).toList());
+        (event) => event.documents.map((e) => Note.fromJson(e.data)).toList());
+  }
+
+  Future<void> addOrUpdateNote(Note note) async {
+    return _databaseService.addOrUpdateNote(_prefsService.userData.userId, note);
+  }
+
+  Future<void> deleteNote(Note note) async {
+    return _databaseService.deleteNote(_prefsService.userData.userId, note);
   }
 }

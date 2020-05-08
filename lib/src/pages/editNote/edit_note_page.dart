@@ -1,37 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notesapp/src/blocs/edit_note/edit_note_bloc.dart';
+import 'package:notesapp/src/blocs/edit_note/edit_note_event.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/models/note.dart';
-import 'package:notesapp/src/pages/editNote/edit_note_view_model.dart';
-import 'package:notesapp/src/services/auth_service.dart';
-import 'package:notesapp/src/services/database_service.dart';
+import 'package:notesapp/src/repositories/notes_repository.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
-import 'package:notesapp/src/utils/ui_utils.dart';
-import 'package:provider/provider.dart';
 
 class EditNotePage extends StatelessWidget {
-  final _editNoteViewModel = EditNoteViewModel();
-
   @override
   Widget build(BuildContext context) {
-    final Note _note =
-        ModalRoute.of(context).settings.arguments ?? Note.newEmptyNote();
-    _editNoteViewModel.setNote(_note);
+    final _editNoteBloc = EditNoteBloc(
+        ModalRoute.of(context).settings.arguments ?? Note.newEmptyNote(),
+        NotesRepository());
     return Scaffold(
       body: SafeArea(
-        child: ChangeNotifierProvider<EditNoteViewModel>.value(
-          value: _editNoteViewModel,
+        child: BlocProvider<EditNoteBloc>.value(
+          value: _editNoteBloc,
           child: NotePageLayout(),
         ),
       ),
 
       /// Using a builder for floatingActionButton because the we need context
       /// from inside scaffold. Same for delete button.
-      floatingActionButton: Builder(
-        builder: (builderContext) => FloatingActionButton(
-          child: Icon(Icons.save),
-          onPressed: () => _saveNote(builderContext),
-        ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.save),
+        onPressed: () => _editNoteBloc.add(AddOrUpdateNote()),
       ),
       appBar: AppBar(
         elevation: 0,
@@ -43,32 +38,12 @@ class EditNotePage extends StatelessWidget {
           Builder(
             builder: (buildContext) => IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () => _deleteNote(buildContext),
+              onPressed: () => _editNoteBloc.add(DeleteNote()),
             ),
           ),
         ],
       ),
     );
-  }
-
-  void _saveNote(BuildContext context) {
-    showProgress(context, 'Saving note');
-    final userId = locator<AuthService>().firebaseUser.uid;
-
-    locator<DatabaseService>()
-        .addOrUpdateNote(userId, _editNoteViewModel.note)
-        .then((value) => locator<NavigationService>().goBack())
-        .catchError((e) => showMessage(context, e.toString()));
-  }
-
-  void _deleteNote(BuildContext context) {
-    showProgress(context, 'Deleting note');
-    final userId = locator<AuthService>().firebaseUser.uid;
-
-    locator<DatabaseService>()
-        .deleteNote(userId, _editNoteViewModel.note)
-        .then((value) => locator<NavigationService>().goBack())
-        .catchError((e) => showMessage(context, e.toString()));
   }
 }
 
@@ -83,7 +58,7 @@ class NotePageLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final editNoteViewModel = Provider.of<EditNoteViewModel>(context);
+    BlocProvider.of<EditNoteBloc>(context).initTextEditingControllers();
     FocusScope.of(context).requestFocus(_focusNode);
     return RawKeyboardListener(
       focusNode: _focusNode,
@@ -94,8 +69,7 @@ class NotePageLayout extends StatelessWidget {
           children: <Widget>[
             TextField(
               controller:
-                  TextEditingController(text: editNoteViewModel.note.title),
-              onChanged: (text) => editNoteViewModel.setNoteValue(title: text),
+                  BlocProvider.of<EditNoteBloc>(context).titleController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
               decoration: InputDecoration.collapsed(hintText: 'Title'),
@@ -106,9 +80,7 @@ class NotePageLayout extends StatelessWidget {
             Expanded(
               child: TextField(
                 controller:
-                    TextEditingController(text: editNoteViewModel.note.message),
-                onChanged: (text) =>
-                    editNoteViewModel.setNoteValue(message: text),
+                    BlocProvider.of<EditNoteBloc>(context).messageController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration.collapsed(hintText: 'Message'),
