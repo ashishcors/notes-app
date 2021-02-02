@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 void showMessage(BuildContext context, String message) {
   hideProgress(context);
-  Scaffold.of(context).showSnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
     ),
@@ -12,7 +12,7 @@ void showMessage(BuildContext context, String message) {
 
 void showProgress(BuildContext context, String message) {
   hideProgress(context);
-  Scaffold.of(context).showSnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       duration: Duration(days: 365),
       content: Row(
@@ -27,5 +27,5 @@ void showProgress(BuildContext context, String message) {
 }
 
 void hideProgress(BuildContext context) {
-  Scaffold.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
 }

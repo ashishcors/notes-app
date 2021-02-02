@@ -5,7 +5,6 @@ import 'package:notesapp/src/blocs/edit_note/edit_note_bloc.dart';
 import 'package:notesapp/src/blocs/edit_note/edit_note_event.dart';
 import 'package:notesapp/src/locator.dart';
 import 'package:notesapp/src/models/note.dart';
-import 'package:notesapp/src/repositories/notes_repository.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
 
 class EditNotePage extends StatelessWidget {
@@ -13,7 +12,7 @@ class EditNotePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _editNoteBloc = EditNoteBloc(
         ModalRoute.of(context).settings.arguments ?? Note.newEmptyNote(),
-        NotesRepository());
+        locator());
     return Scaffold(
       body: SafeArea(
         child: BlocProvider<EditNoteBloc>.value(

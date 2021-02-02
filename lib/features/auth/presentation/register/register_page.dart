@@ -1,18 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:notesapp/src/models/note.dart';
-import 'package:notesapp/src/models/user.dart';
-import 'package:notesapp/src/models/user_preferences.dart';
-import 'package:notesapp/src/routing/route_names.dart';
-import 'package:notesapp/src/services/auth_service.dart';
-import 'package:notesapp/src/services/database_service.dart';
-import 'package:notesapp/src/services/navigation_service.dart';
-import 'package:notesapp/src/utils/ui_utils.dart';
 import 'package:notesapp/src/widgets/app_logo.dart';
 import 'package:notesapp/src/widgets/custom_text_field.dart';
 import 'package:notesapp/src/widgets/scrollable_centerd_sized_box.dart';
-
-import '../../locator.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -87,6 +77,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
   }
 
   void _registerUser() {
+    /*
     String name = _nameTextController.text.trim();
     String email = _emailTextController.text.trim();
     String password = _passwordTextController.text.trim();
@@ -112,5 +103,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                   ? showMessage(context, e.message)
                   : showMessage(context, e.toString())
             });
+
+     */
   }
 }

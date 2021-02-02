@@ -5,13 +5,8 @@ import 'package:notesapp/src/blocs/notes/notes_bloc.dart';
 import 'package:notesapp/src/blocs/notes/notes_event.dart';
 import 'package:notesapp/src/blocs/notes/notes_state.dart';
 import 'package:notesapp/src/models/note.dart';
-import 'package:notesapp/src/models/user.dart';
-import 'package:notesapp/src/repositories/notes_repository.dart';
 import 'package:notesapp/src/routing/route_names.dart';
-import 'package:notesapp/src/services/auth_service.dart';
-import 'package:notesapp/src/services/database_service.dart';
 import 'package:notesapp/src/services/navigation_service.dart';
-import 'package:notesapp/src/services/prefs_service.dart';
 import 'package:notesapp/src/widgets/drawer_layout.dart';
 
 import '../../locator.dart';
@@ -22,25 +17,25 @@ class HomePage extends StatelessWidget {
   }
 
   void _verifyLogin() async {
-    final isLoggedIn = await locator<AuthService>().isUserLoggedIn();
-    if (!isLoggedIn)
-      locator<NavigationService>().navigateToClearStack(loginRoute);
-    else
-      _verifyEmail();
+    // final isLoggedIn = await locator<AuthService>().isUserLoggedIn();
+    // if (!isLoggedIn)
+    //   locator<NavigationService>().navigateToClearStack(loginRoute);
+    // else
+    //   _verifyEmail();
   }
 
   void _verifyEmail() async {
-    final isEmailVerified = await locator<AuthService>().isEmailVerified();
-    if (!isEmailVerified)
-      locator<NavigationService>().navigateToClearStack(emailVerificationRoute);
+    // final isEmailVerified = await locator<AuthService>().isEmailVerified();
+    // if (!isEmailVerified)
+    //   locator<NavigationService>().navigateToClearStack(emailVerificationRoute);
   }
 
   void _fetchUserData(BuildContext context) async {
-    final prefs = locator<PrefsService>();
-    final userId = locator<AuthService>().firebaseUser.uid;
-    locator<DatabaseService>().getUser(userId).then((value) {
-      prefs.userData = User.fromJson(value.data);
-    }).catchError((_) => {});
+    // final prefs = locator<PrefsService>();
+    // final userId = locator<AuthService>().firebaseUser.uid;
+    // locator<DatabaseService>().getUser(userId).then((value) {
+    //   prefs.userData = User.fromJson(value.data);
+    // }).catchError((_) => {});
   }
 
   @override
@@ -53,7 +48,7 @@ class HomePage extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocProvider(
-          create: (_) => NotesBloc(NotesRepository()),
+          create: (_) => NotesBloc(locator()),
           child: HomePageLayout(),
         ),
       ),

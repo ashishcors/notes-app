@@ -20,7 +20,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    getCurrentAppTheme();
+    // getCurrentAppTheme();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => _themeViewModel),
