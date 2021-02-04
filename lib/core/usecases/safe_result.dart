@@ -20,6 +20,8 @@ class Failure<T> extends SafeResult<T> {
   Failure(this.exception);
 
   @override
-  B fold<B>(onSuccess(T value), onFailure(Exception exception)) =>
-      onFailure(exception);
+  B fold<B>(onSuccess(T value), onFailure(Exception exception)) {
+    print(exception); // TODO: remove this
+    return onFailure(exception);
+  }
 }

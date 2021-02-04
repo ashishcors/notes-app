@@ -1,11 +1,11 @@
 import 'package:notesapp/features/notes/domain/entities/note.dart';
 
 abstract class NotesRepository {
-  Stream<List<Note>> getNotesStream();
+  Stream<List<Note>> getNotesStream(String userId);
 
-  Future<void> addNote(Note note);
+  Future<void> addNote(Note note, String userId);
 
-  Future<void> updateNote(Note note);
+  Future<void> updateNote(Note note, String userId);
 
-  Future<void> deleteNote(String noteId);
+  Future<void> deleteNote(String noteId, String userId);
 }

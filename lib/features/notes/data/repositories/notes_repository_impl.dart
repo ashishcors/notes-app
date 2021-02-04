@@ -8,22 +8,22 @@ class NotesRepositoryImpl extends NotesRepository {
   NotesRepositoryImpl(this._dataSource);
 
   @override
-  Future<void> addNote(Note note) {
-    return _dataSource.addNote(note);
+  Future<void> addNote(Note note, String userId) {
+    return _dataSource.addNote(note, userId);
   }
 
   @override
-  Future<void> deleteNote(String noteId) {
-    return _dataSource.deleteNote(noteId);
+  Future<void> deleteNote(String noteId, String userId) {
+    return _dataSource.deleteNote(noteId, userId);
   }
 
   @override
-  Stream<List<Note>> getNotesStream() {
-    return _dataSource.getNotesStream();
+  Stream<List<Note>> getNotesStream(String userId) {
+    return _dataSource.getNotesStream(userId);
   }
 
   @override
-  Future<void> updateNote(Note note) {
-    return _dataSource.updateNote(note);
+  Future<void> updateNote(Note note, String userId) {
+    return _dataSource.updateNote(note, userId);
   }
 }

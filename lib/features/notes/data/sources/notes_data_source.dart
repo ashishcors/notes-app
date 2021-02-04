@@ -3,49 +3,40 @@ import 'package:notesapp/features/notes/data/model/note_response.dart';
 import 'package:notesapp/features/notes/domain/entities/note.dart';
 
 abstract class NotesDataSource {
-  Stream<List<NoteResponse>> getNotesStream();
+  Stream<List<NoteResponse>> getNotesStream(String userId);
 
-  Future<void> addNote(Note note);
+  Future<void> addNote(Note note, String userId);
 
-  Future<void> updateNote(Note note);
+  Future<void> updateNote(Note note, String userId);
 
-  Future<void> deleteNote(String noteId);
+  Future<void> deleteNote(String noteId, String userId);
 }
 
 class NotesDataSourceImpl extends NotesDataSource {
   final _database = FirebaseFirestore.instance;
-  final String _userId;
-
   static const _NOTES = "notes";
   static const _USERS = "users";
 
-  NotesDataSourceImpl(this._userId);
-
   @override
-  Future<void> addNote(Note note) {
-    return _database
-        .collection(_USERS)
-        .doc(_userId)
-        .collection(_NOTES)
-        .doc(note.noteId)
-        .set((note as NoteResponse).toMap());
+  Future<void> addNote(Note note, String userId) {
+    return updateNote(note, userId);
   }
 
   @override
-  Future<void> deleteNote(String noteId) {
+  Future<void> deleteNote(String noteId, String userId) {
     return _database
         .collection(_USERS)
-        .doc(_userId)
+        .doc(userId)
         .collection(_NOTES)
         .doc(noteId)
         .delete();
   }
 
   @override
-  Stream<List<NoteResponse>> getNotesStream() async* {
+  Stream<List<NoteResponse>> getNotesStream(String userId) async* {
     yield* _database
         .collection(_USERS)
-        .doc(_userId)
+        .doc(userId)
         .collection(_NOTES)
         .snapshots()
         .map((event) =>
@@ -53,12 +44,12 @@ class NotesDataSourceImpl extends NotesDataSource {
   }
 
   @override
-  Future<void> updateNote(Note note) {
+  Future<void> updateNote(Note note, String userId) {
     return _database
         .collection(_USERS)
-        .doc(_userId)
+        .doc(userId)
         .collection(_NOTES)
         .doc(note.noteId)
-        .set((note as NoteResponse).toMap());
+        .set(NoteResponse.fromNote(note).toMap());
   }
 }

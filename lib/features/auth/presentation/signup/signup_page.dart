@@ -5,10 +5,9 @@ import 'package:get/get.dart';
 import '../../../../core/widgets/app_logo.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/scrollable_centered_sized_box.dart';
-import '../../../../routing/app_pages.dart';
-import 'login_controller.dart';
+import 'signup_controller.dart';
 
-class LoginPage extends GetView<LoginController> {
+class SignupPage extends GetView<SignupController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,10 +17,17 @@ class LoginPage extends GetView<LoginController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text('Register', style: TextStyle(fontSize: 20)),
+              SizedBox(height: 30),
               AppLogo(),
               SizedBox(height: 30),
-              Text('LOGIN', style: TextStyle(fontSize: 20)),
-              SizedBox(height: 30),
+              CustomTextField(
+                controller: controller.nameTextController,
+                labelText: 'Name',
+                textInputAction: TextInputAction.next,
+                onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+              ),
+              SizedBox(height: 8),
               CustomTextField(
                 controller: controller.emailTextController,
                 labelText: 'Email',
@@ -35,20 +41,7 @@ class LoginPage extends GetView<LoginController> {
                 obscureText: true,
                 labelText: 'Password',
                 textInputAction: TextInputAction.done,
-                onSubmitted: (_) => _verifyLogin(),
-              ),
-              SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.FORGOT_PASSWORD);
-                  },
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
+                onSubmitted: (_) => _signupUser(),
               ),
               SizedBox(height: 20),
               SizedBox(
@@ -56,30 +49,10 @@ class LoginPage extends GetView<LoginController> {
                 height: 50,
                 child: MaterialButton(
                   color: Theme.of(context).accentColor,
-                  onPressed: () => _verifyLogin(),
+                  onPressed: () => _signupUser(),
                   child: Text(
-                    'LOGIN',
+                    'SIGNUP',
                     style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              SizedBox(height: 8),
-              Text('OR'),
-              SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: MaterialButton(
-                    color: Colors.white,
-                    onPressed: () {
-                      Get.toNamed(Routes.SIGNUP);
-                    },
-                    child: Text(
-                      'CREATE AN ACCOUNT',
-                      style: TextStyle(color: Theme.of(context).accentColor),
-                    ),
                   ),
                 ),
               ),
@@ -90,7 +63,7 @@ class LoginPage extends GetView<LoginController> {
     );
   }
 
-  void _verifyLogin() {
-    controller.login();
+  void _signupUser() {
+    controller.signup();
   }
 }

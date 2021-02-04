@@ -1,17 +1,19 @@
-import 'package:notesapp/core/usecases/base_usecase.dart';
-import 'package:notesapp/core/usecases/safe_result.dart';
-import 'package:notesapp/features/notes/domain/entities/note.dart';
-import 'package:notesapp/features/notes/domain/repositories/notes_repository.dart';
+import '../../../../core/services/prefs_service.dart';
+import '../../../../core/usecases/base_usecase.dart';
+import '../../../../core/usecases/safe_result.dart';
+import '../entities/note.dart';
+import '../repositories/notes_repository.dart';
 
 class GetNotesSteamNoteUseCase extends UseCase<Stream<List<Note>>, void> {
   final NotesRepository _repository;
+  final PrefsService _prefsService;
 
-  GetNotesSteamNoteUseCase(this._repository);
+  GetNotesSteamNoteUseCase(this._repository, this._prefsService);
 
   @override
   Future<SafeResult<Stream<List<Note>>>> call(void params) async {
     try {
-      return Success(_repository.getNotesStream());
+      return Success(_repository.getNotesStream(_prefsService.userId));
     } catch (e) {
       return Failure(e);
     }

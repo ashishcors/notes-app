@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:notesapp/features/auth/domain/entities/user.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<void> login(String email, String password);
+  Future<User> login(String email, String password);
 
-  Future<void> signup(String name, String email, String password);
+  Future<User> signup(String name, String email, String password);
 
   Future<bool> checkEmailVerified();
 
@@ -25,8 +25,15 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   }
 
   @override
-  Future<void> login(String email, String password) {
-    return _auth.signInWithEmailAndPassword(email: email, password: password);
+  Future<User> login(String email, String password) async {
+    final result = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    print(result.user.uid + "<<<this");
+    return User(
+      userId: result.user.uid,
+      displayName: result.user.displayName,
+      emailId: result.user.email,
+    );
   }
 
   @override
@@ -40,10 +47,15 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   }
 
   @override
-  Future<void> signup(String name, String email, String password) async {
+  Future<User> signup(String name, String email, String password) async {
     final result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     await result.user.updateProfile(displayName: name);
+    return User(
+      userId: result.user.uid,
+      displayName: result.user.displayName,
+      emailId: result.user.email,
+    );
   }
 
   @override
@@ -53,7 +65,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     final currentUser = _auth.currentUser;
     return User(
         userId: currentUser.uid,
-        displayName: currentUser.email,
+        displayName: currentUser.displayName,
         emailId: currentUser.email);
   }
 }

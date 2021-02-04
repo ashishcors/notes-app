@@ -1,16 +1,18 @@
-import 'package:notesapp/core/usecases/base_usecase.dart';
-import 'package:notesapp/core/usecases/safe_result.dart';
-import 'package:notesapp/features/notes/domain/repositories/notes_repository.dart';
+import '../../../../core/services/prefs_service.dart';
+import '../../../../core/usecases/base_usecase.dart';
+import '../../../../core/usecases/safe_result.dart';
+import '../repositories/notes_repository.dart';
 
-class UpdateNoteUseCase extends UseCase<void, String> {
+class DeleteNoteUseCase extends UseCase<void, String> {
   final NotesRepository _repository;
+  final PrefsService _prefsService;
 
-  UpdateNoteUseCase(this._repository);
+  DeleteNoteUseCase(this._repository, this._prefsService);
 
   @override
   Future<SafeResult<void>> call(String params) async {
     try {
-      final result = await _repository.deleteNote(params);
+      final result = await _repository.deleteNote(params, _prefsService.userId);
       return Success(result);
     } catch (e) {
       return Failure(e);

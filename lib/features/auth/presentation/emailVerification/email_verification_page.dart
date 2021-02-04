@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:notesapp/src/utils/ui_utils.dart';
 
 class EmailVerificationPage extends StatelessWidget {
   @override
@@ -26,7 +25,7 @@ class EmailVerificationPageLayout extends StatelessWidget {
             color: Colors.orange,
           ),
           Text(
-            "Your email is not verifed",
+            "Your email is not verified",
             style: TextStyle(
               fontSize: 15,
             ),
@@ -48,7 +47,8 @@ class EmailVerificationPageLayout extends StatelessWidget {
   }
 
   void _sendVerificationEmail(BuildContext context) {
-    showProgress(context, 'Sending verification email');
+    //TODO
+    // showProgress(context, 'Sending verification email');
 /*
     locator<AuthService>()
         .sendVerificationEmail()

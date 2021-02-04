@@ -13,7 +13,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> login(String email, String password) {
+  Future<User> login(String email, String password) {
     return _remoteDataSource.login(email, password);
   }
 
@@ -28,7 +28,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> signup(String name, String email, String password) {
+  Future<User> signup(String name, String email, String password) {
     return _remoteDataSource.signup(name, email, password);
   }
 
