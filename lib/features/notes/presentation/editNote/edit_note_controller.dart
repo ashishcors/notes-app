@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notesapp/features/notes/domain/entities/note.dart';
-import 'package:notesapp/features/notes/domain/usecases/add_note_use_case.dart';
-import 'package:notesapp/features/notes/domain/usecases/delete_note_use_case.dart';
-import 'package:notesapp/features/notes/domain/usecases/update_note_use_case.dart';
+
+import '../../../../core/utils/color_palette.dart';
+import '../../domain/entities/note.dart';
+import '../../domain/usecases/add_note_use_case.dart';
+import '../../domain/usecases/delete_note_use_case.dart';
+import '../../domain/usecases/update_note_use_case.dart';
+import 'colorpicker/color_picker.dart';
 
 class EditNoteController extends GetxController {
   final AddNoteUseCase _addNoteUseCase;
@@ -19,8 +21,8 @@ class EditNoteController extends GetxController {
 
   final isLoading = false.obs;
 
-  var note =
-      ((Get.arguments ?? Note(null, "", "", Colors.white.value)) as Note).obs;
+  final note = ((Get.arguments ??
+      Note(null, "", "", ColorPalette.NOTE_DEFAULT.value)) as Note);
 
   final titleController = TextEditingController();
   final messageController = TextEditingController();
@@ -30,14 +32,14 @@ class EditNoteController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    titleController.text = note.value.title;
-    messageController.text = note.value.message;
-    color.value = Color(note.value.color ?? Colors.white.value);
+    titleController.text = note.title;
+    messageController.text = note.message;
+    color.value = Color(note.color ?? ColorPalette.NOTE_DEFAULT.value);
   }
 
-  deleteNote() async {
+  void deleteNote() async {
     isLoading.value = true;
-    final result = await _deleteNoteUseCase(note.value.noteId);
+    final result = await _deleteNoteUseCase(note.noteId);
     result.fold(
       (value) {
         isLoading.value = false;
@@ -50,16 +52,33 @@ class EditNoteController extends GetxController {
     );
   }
 
-  saveNote() async {
-    isLoading.value = true;
+  Future<bool> saveNote() async {
     final title = titleController.text;
     final message = messageController.text;
     final mColor = color.value.value;
 
-    if (title.isEmpty && message.isEmpty) return;
+    if (_isContentUnChange(title, message, mColor)) {
+      Get.back();
+      return true;
+    }
 
-    final noteId = note.value.noteId;
+    if (title.isEmpty && message.isEmpty) {
+      Get.defaultDialog(
+          title: "Delete note?",
+          middleText: "Your note is empty. Would you like to delete this?",
+          textConfirm: "Delete",
+          confirmTextColor: Get.theme.backgroundColor,
+          textCancel: "Keep editing",
+          onConfirm: () {
+            Get.back();
+            deleteNote();
+          });
+      return false;
+    }
 
+    final noteId = note.noteId;
+
+    isLoading.value = true;
     final result = (noteId == null)
         ? await _addNoteUseCase(AddNoteParam(title, message, mColor))
         : await _updateNoteUseCase(Note(noteId, title, message, mColor));
@@ -74,5 +93,16 @@ class EditNoteController extends GetxController {
         Get.snackbar("Error!", exception.toString());
       },
     );
+    return false;
+  }
+
+  bool _isContentUnChange(String title, String message, int mColor) {
+    return title == note.title &&
+        message == note.message &&
+        mColor == note.color;
+  }
+
+  openColorPicker() {
+    Get.dialog(ColorPicker(color.value, (newColor) => color.value = newColor));
   }
 }

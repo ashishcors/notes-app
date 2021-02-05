@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../core/services/prefs_service.dart';
 import '../features/auth/data/repositories/auth_repository_impl.dart';
 import '../features/auth/data/sources/auth_remote_data_source.dart';
 import '../features/auth/domain/repositories/auth_repository.dart';
@@ -14,19 +15,29 @@ import '../features/notes/domain/repositories/notes_repository.dart';
 /// each page, like [HomeBinding].
 ///
 /// Ref: https://github.com/jonataslaw/getx/blob/master/documentation/en_US/dependency_management.md
-class AppBindings extends Bindings {
-  @override
-  void dependencies() {
+class AppBindings {
+  static Future<void> init() async {
+    // pref
+    await Get.putAsync<PrefsService>(
+      () async => await PrefsService.getInstance(),
+      permanent: true,
+    );
+
     // auth
     Get.lazyPut<GetLoggedInUserUseCase>(
-        () => GetLoggedInUserUseCase(Get.find()));
-    Get.lazyPut<SignOutUseCase>(() => SignOutUseCase(Get.find(), Get.find()));
+        () => GetLoggedInUserUseCase(Get.find()),
+        fenix: true);
+    Get.lazyPut<SignOutUseCase>(() => SignOutUseCase(Get.find(), Get.find()),
+        fenix: true);
 
-    Get.lazyPut<AuthRepository>(() => AuthRepositoryImpl(Get.find()));
-    Get.lazyPut<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl());
+    Get.lazyPut<AuthRepository>(() => AuthRepositoryImpl(Get.find()),
+        fenix: true);
+    Get.lazyPut<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(),
+        fenix: true);
 
     // notes
-    Get.lazyPut<NotesRepository>(() => NotesRepositoryImpl(Get.find()));
-    Get.lazyPut<NotesDataSource>(() => NotesDataSourceImpl());
+    Get.lazyPut<NotesRepository>(() => NotesRepositoryImpl(Get.find()),
+        fenix: true);
+    Get.lazyPut<NotesDataSource>(() => NotesDataSourceImpl(), fenix: true);
   }
 }

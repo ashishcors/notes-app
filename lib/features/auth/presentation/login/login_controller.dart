@@ -34,7 +34,7 @@ class LoginController extends GetxController {
     result.fold(
       (value) {
         isLoading.value = false;
-        Get.toNamed(Routes.HOME);
+        Get.offNamed(Routes.HOME);
       },
       (exception) {
         isLoading.value = false;

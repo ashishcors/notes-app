@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
-import 'package:notesapp/features/auth/domain/entities/user.dart';
+
+import '../../domain/entities/user.dart';
 
 abstract class AuthRemoteDataSource {
   Future<User> login(String email, String password);

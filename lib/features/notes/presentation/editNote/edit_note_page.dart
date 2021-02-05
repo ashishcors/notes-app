@@ -3,46 +3,44 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:notesapp/features/notes/presentation/editNote/edit_note_controller.dart';
+
+import '../../../../core/utils/color_palette.dart';
+import '../../../../core/widgets/blocking_progress.dart';
+import 'edit_note_controller.dart';
 
 class EditNotePage extends GetView<EditNoteController> {
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Scaffold(
-        body: SafeArea(
-          child: NotePageLayout(controller),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.save),
-          onPressed: () => controller.saveNote(),
-        ),
-        appBar: AppBar(
-          elevation: 0,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.image),
-              onPressed: () => {},
+    return Obx(
+      () => WillPopScope(
+        onWillPop: () => controller.saveNote(),
+        child: BlockingProgress(
+          isLoading: controller.isLoading.value,
+          child: Scaffold(
+            backgroundColor: controller.color.value.forBg(Get.isDarkMode),
+            body: SafeArea(
+              child: NotePageLayout(controller),
             ),
-            Builder(
-              builder: (buildContext) => IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () => controller.deleteNote(),
-              ),
+            appBar: AppBar(
+              backgroundColor: controller.color.value.forBg(Get.isDarkMode),
+              elevation: 0,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.palette_outlined),
+                  onPressed: () => controller.openColorPicker(),
+                ),
+                Builder(
+                  builder: (buildContext) => IconButton(
+                    icon: Icon(Icons.delete_outline),
+                    onPressed: () => controller.deleteNote(),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-      Obx(
-        () => Visibility(
-          visible: controller.isLoading.value,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(color: Colors.black.withOpacity(.1)),
           ),
         ),
       ),
-    ]);
+    );
   }
 }
 

@@ -1,6 +1,6 @@
-import 'package:notesapp/features/notes/data/sources/notes_data_source.dart';
-import 'package:notesapp/features/notes/domain/entities/note.dart';
-import 'package:notesapp/features/notes/domain/repositories/notes_repository.dart';
+import '../../domain/entities/note.dart';
+import '../../domain/repositories/notes_repository.dart';
+import '../sources/notes_data_source.dart';
 
 class NotesRepositoryImpl extends NotesRepository {
   final NotesDataSource _dataSource;

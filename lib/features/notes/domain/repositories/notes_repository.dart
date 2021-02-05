@@ -1,4 +1,4 @@
-import 'package:notesapp/features/notes/domain/entities/note.dart';
+import '../entities/note.dart';
 
 abstract class NotesRepository {
   Stream<List<Note>> getNotesStream(String userId);

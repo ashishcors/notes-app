@@ -1,8 +1,8 @@
-import 'package:notesapp/core/services/prefs_service.dart';
-import 'package:notesapp/core/usecases/base_usecase.dart';
-import 'package:notesapp/core/usecases/safe_result.dart';
-import 'package:notesapp/features/auth/domain/repositories/auth_repository.dart';
-import 'package:notesapp/features/notes/domain/usecases/add_note_use_case.dart';
+import '../../../../core/services/prefs_service.dart';
+import '../../../../core/usecases/base_use_case.dart';
+import '../../../../core/usecases/safe_result.dart';
+import '../../../notes/domain/usecases/add_note_use_case.dart';
+import '../repositories/auth_repository.dart';
 
 class SignupUseCase extends UseCase<void, SignupParams> {
   final AuthRepository _repository;

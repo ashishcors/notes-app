@@ -1,8 +1,8 @@
-import 'package:notesapp/core/exceptions/api_exception.dart';
-import 'package:notesapp/core/usecases/base_usecase.dart';
-import 'package:notesapp/core/usecases/safe_result.dart';
-import 'package:notesapp/features/auth/domain/entities/user.dart';
-import 'package:notesapp/features/auth/domain/repositories/auth_repository.dart';
+import '../../../../core/exceptions/api_exception.dart';
+import '../../../../core/usecases/base_use_case.dart';
+import '../../../../core/usecases/safe_result.dart';
+import '../entities/user.dart';
+import '../repositories/auth_repository.dart';
 
 class GetLoggedInUserUseCase extends UseCase<User, void> {
   final AuthRepository _repository;

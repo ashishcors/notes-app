@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notesapp/features/auth/domain/usecases/signup_use_case.dart';
-import 'package:notesapp/routing/app_pages.dart';
+
+import '../../../../routing/app_pages.dart';
+import '../../domain/usecases/signup_use_case.dart';
 
 class SignupController extends GetxController {
   final SignupUseCase _signupUseCase;

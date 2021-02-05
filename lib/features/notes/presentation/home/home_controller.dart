@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:notesapp/routing/app_pages.dart';
 
+import '../../../../routing/app_pages.dart';
 import '../../../auth/domain/usecases/get_logged_in_user_use_case.dart';
 import '../../../auth/domain/usecases/sign_out_use_case.dart';
 import '../../domain/entities/note.dart';

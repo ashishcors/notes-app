@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:notesapp/features/auth/domain/entities/user_preference.dart';
+
+import 'user_preference.dart';
 
 class User {
   String userId;

@@ -1,4 +1,4 @@
-import 'package:notesapp/features/auth/domain/entities/user.dart';
+import '../entities/user.dart';
 
 abstract class AuthRepository {
   Future<User> login(String email, String password);

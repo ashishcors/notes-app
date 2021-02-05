@@ -1,6 +1,6 @@
-import 'package:notesapp/features/auth/data/sources/auth_remote_data_source.dart';
-import 'package:notesapp/features/auth/domain/entities/user.dart';
-import 'package:notesapp/features/auth/domain/repositories/auth_repository.dart';
+import '../../domain/entities/user.dart';
+import '../../domain/repositories/auth_repository.dart';
+import '../sources/auth_remote_data_source.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;

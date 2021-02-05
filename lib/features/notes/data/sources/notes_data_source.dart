@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:notesapp/features/notes/data/model/note_response.dart';
-import 'package:notesapp/features/notes/domain/entities/note.dart';
+
+import '../../domain/entities/note.dart';
+import '../model/note_response.dart';
 
 abstract class NotesDataSource {
   Stream<List<NoteResponse>> getNotesStream(String userId);

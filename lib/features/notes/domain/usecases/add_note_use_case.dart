@@ -1,5 +1,5 @@
 import '../../../../core/services/prefs_service.dart';
-import '../../../../core/usecases/base_usecase.dart';
+import '../../../../core/usecases/base_use_case.dart';
 import '../../../../core/usecases/safe_result.dart';
 import '../entities/note.dart';
 import '../repositories/notes_repository.dart';

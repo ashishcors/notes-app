@@ -1,4 +1,4 @@
-import 'package:notesapp/features/notes/domain/entities/note.dart';
+import '../../domain/entities/note.dart';
 
 class NoteResponse extends Note {
   NoteResponse(String noteId, String title, String message, int color)
@@ -9,6 +9,7 @@ class NoteResponse extends Note {
       'noteId': noteId,
       'title': title,
       'message': message,
+      'color': color,
     };
   }
 

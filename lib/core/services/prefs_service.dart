@@ -15,6 +15,7 @@ class PrefsService {
   }
 
   static const _keyUserId = 'KeyUserId';
+  static const _keyIsEmailVerified = 'KeyIsEmailVerified';
 
   String get userId {
     try {
@@ -26,6 +27,18 @@ class PrefsService {
 
   set userId(String userId) {
     _saveToDisk(_keyUserId, userId);
+  }
+
+  bool get isEmailVerified {
+    try {
+      return _getFromDisk(_keyIsEmailVerified) ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  set isEmailVerified(bool isEmailVerified) {
+    _saveToDisk(_keyIsEmailVerified, isEmailVerified);
   }
 
   dynamic _getFromDisk(String key) {
@@ -54,7 +67,7 @@ class PrefsService {
     }
   }
 
-  void clear() {
-    // TODO
+  Future<void> clear() {
+    return _preferences.clear();
   }
 }

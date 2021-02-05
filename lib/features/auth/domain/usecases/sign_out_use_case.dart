@@ -1,7 +1,7 @@
-import 'package:notesapp/core/services/prefs_service.dart';
-import 'package:notesapp/core/usecases/base_usecase.dart';
-import 'package:notesapp/core/usecases/safe_result.dart';
-import 'package:notesapp/features/auth/domain/repositories/auth_repository.dart';
+import '../../../../core/services/prefs_service.dart';
+import '../../../../core/usecases/base_use_case.dart';
+import '../../../../core/usecases/safe_result.dart';
+import '../repositories/auth_repository.dart';
 
 class SignOutUseCase extends UseCase<void, void> {
   final AuthRepository _repository;
@@ -13,7 +13,7 @@ class SignOutUseCase extends UseCase<void, void> {
   Future<SafeResult<void>> call(params) async {
     try {
       final result = await _repository.signOut();
-      _prefsService.clear();
+      await _prefsService.clear();
       return Success(result);
     } catch (e) {
       return Failure(e);
