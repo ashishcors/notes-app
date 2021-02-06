@@ -19,7 +19,8 @@ class NoteView extends StatelessWidget {
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Color(_note.color).forBg(Get.isDarkMode),
+          color: Color(_note.color ?? ColorPalette.NOTE_DEFAULT.value)
+              .forBg(Get.isDarkMode),
           boxShadow: [
             BoxShadow(color: Colors.grey, blurRadius: 2),
           ],
@@ -28,19 +29,28 @@ class NoteView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              _note.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              softWrap: true,
-              style: TextStyle(fontSize: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    _note.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                Visibility(
+                  child: Icon(Icons.push_pin, size: 12),
+                  visible: _note.isPinned ?? false,
+                ),
+              ],
             ),
             Text(
-              //Todo: Improve this
               _note.message,
               overflow: TextOverflow.fade,
               softWrap: true,
-              maxLines: 7,
+              maxLines: 15,
             ),
           ],
         ),

@@ -3,6 +3,7 @@ class Note {
   final String title;
   final String message;
   final int color;
+  final bool isPinned;
 
-  Note(this.noteId, this.title, this.message, this.color);
+  Note(this.noteId, this.title, this.message, this.color, this.isPinned);
 }

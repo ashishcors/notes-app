@@ -18,7 +18,7 @@ class SignupUseCase extends UseCase<void, SignupParams> {
           await _repository.signup(params.name, params.email, params.password);
       _prefsService.userId = result.userId;
       await _addNoteUseCase(
-          AddNoteParam("Welcome", "Welcome to notesApp.", null));
+          AddNoteParam("Welcome", "Welcome to notesApp.", null, false));
       return Success(result);
     } catch (e) {
       return Failure(e);

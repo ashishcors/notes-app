@@ -21,8 +21,10 @@ class EditNoteController extends GetxController {
 
   final isLoading = false.obs;
 
+  final isPinned = false.obs;
+
   final note = ((Get.arguments ??
-      Note(null, "", "", ColorPalette.NOTE_DEFAULT.value)) as Note);
+      Note(null, "", "", ColorPalette.NOTE_DEFAULT.value, false)) as Note);
 
   final titleController = TextEditingController();
   final messageController = TextEditingController();
@@ -35,6 +37,7 @@ class EditNoteController extends GetxController {
     titleController.text = note.title;
     messageController.text = note.message;
     color.value = Color(note.color ?? ColorPalette.NOTE_DEFAULT.value);
+    isPinned.value = note.isPinned ?? false;
   }
 
   void deleteNote() async {
@@ -56,8 +59,9 @@ class EditNoteController extends GetxController {
     final title = titleController.text;
     final message = messageController.text;
     final mColor = color.value.value;
+    final mIsPinned = isPinned.value;
 
-    if (_isContentUnChange(title, message, mColor)) {
+    if (_isContentUnChange(title, message, mColor, mIsPinned)) {
       Get.back();
       return true;
     }
@@ -80,8 +84,10 @@ class EditNoteController extends GetxController {
 
     isLoading.value = true;
     final result = (noteId == null)
-        ? await _addNoteUseCase(AddNoteParam(title, message, mColor))
-        : await _updateNoteUseCase(Note(noteId, title, message, mColor));
+        ? await _addNoteUseCase(AddNoteParam(title, message, mColor, mIsPinned))
+        : await _updateNoteUseCase(
+            Note(noteId, title, message, mColor, mIsPinned),
+          );
 
     result.fold(
       (value) {
@@ -96,13 +102,23 @@ class EditNoteController extends GetxController {
     return false;
   }
 
-  bool _isContentUnChange(String title, String message, int mColor) {
+  bool _isContentUnChange(
+    String title,
+    String message,
+    int mColor,
+    bool mIsPinned,
+  ) {
     return title == note.title &&
         message == note.message &&
-        mColor == note.color;
+        mColor == note.color &&
+        mIsPinned == note.isPinned;
   }
 
   openColorPicker() {
     Get.dialog(ColorPicker(color.value, (newColor) => color.value = newColor));
+  }
+
+  togglePinned() {
+    isPinned.value = !isPinned.value;
   }
 }

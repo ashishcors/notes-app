@@ -11,8 +11,11 @@ class HomeController extends GetxController {
   final GetNotesSteamNoteUseCase _getNotesSteamNoteUseCase;
   final SignOutUseCase _signOutUseCase;
 
-  HomeController(this._loggedInUserUseCase, this._getNotesSteamNoteUseCase,
-      this._signOutUseCase);
+  HomeController(
+    this._loggedInUserUseCase,
+    this._getNotesSteamNoteUseCase,
+    this._signOutUseCase,
+  );
 
   final isLoading = false.obs;
 
@@ -47,8 +50,14 @@ class HomeController extends GetxController {
     final result = await _getNotesSteamNoteUseCase(null);
     result.fold(
       (value) {
-        value.listen((event) {
-          notes.assignAll(event);
+        value.listen((_notes) {
+          _notes.sort((a, b) {
+            if (b.isPinned ?? false) {
+              return 1;
+            }
+            return -1;
+          });
+          notes.assignAll(_notes);
         });
       },
       (exception) {
