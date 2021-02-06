@@ -75,6 +75,7 @@ class NotePageLayout extends StatelessWidget {
                 fontSize: 25,
               ),
             ),
+            SizedBox(height: 16),
             Expanded(
               child: TextField(
                 controller: controller.messageController,

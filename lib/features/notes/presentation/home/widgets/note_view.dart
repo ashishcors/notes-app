@@ -36,11 +36,10 @@ class NoteView extends StatelessWidget {
               style: TextStyle(fontSize: 20),
             ),
             Text(
-              //Todo: Improve this
               _note.message,
               overflow: TextOverflow.fade,
               softWrap: true,
-              maxLines: 7,
+              maxLines: 15,
             ),
           ],
         ),

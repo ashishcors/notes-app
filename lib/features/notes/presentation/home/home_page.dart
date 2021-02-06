@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 
 import '../../../../routing/app_pages.dart';
@@ -42,25 +43,22 @@ class HomePageLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Obx(
-        () => GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: _crossAxisCount(),
-          ),
-          shrinkWrap: true,
-          itemBuilder: (context, i) => NoteView(controller.notes[i]),
-          itemCount: controller.notes.length,
-        ),
+    return Obx(
+      () => StaggeredGridView.countBuilder(
+        itemBuilder: (context, i) => NoteView(controller.notes[i]),
+        itemCount: controller.notes.length,
+        crossAxisCount: _crossAxisCount(),
+        staggeredTileBuilder: (int index) {
+          return StaggeredTile.fit(1);
+        },
       ),
     );
   }
 
   int _crossAxisCount() {
     final screenSize = Get.width;
-    if (screenSize > 1000) return 5;
-    if (screenSize > 800) return 4;
+    if (screenSize > 1000) return 6;
+    if (screenSize > 800) return 5;
     if (screenSize > 600) return 3;
     return 2;
   }
