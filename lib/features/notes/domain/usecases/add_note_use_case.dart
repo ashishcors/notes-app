@@ -13,7 +13,13 @@ class AddNoteUseCase extends UseCase<void, AddNoteParam> {
   @override
   Future<SafeResult<void>> call(AddNoteParam params) async {
     final noteId = DateTime.now().microsecondsSinceEpoch.toString();
-    final note = Note(noteId, params.title, params.message, params.color);
+    final note = Note(
+      noteId,
+      params.title,
+      params.message,
+      params.color,
+      params.isPinned,
+    );
     try {
       final result = await _repository.addNote(note, _prefsService.userId);
       return Success(result);
@@ -27,6 +33,7 @@ class AddNoteParam {
   final String title;
   final String message;
   final int color;
+  final bool isPinned;
 
-  AddNoteParam(this.title, this.message, this.color);
+  AddNoteParam(this.title, this.message, this.color, this.isPinned);
 }

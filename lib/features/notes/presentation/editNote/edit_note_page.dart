@@ -25,15 +25,23 @@ class EditNotePage extends GetView<EditNoteController> {
               backgroundColor: controller.color.value.forBg(Get.isDarkMode),
               elevation: 0,
               actions: <Widget>[
+                Obx(
+                  () => IconButton(
+                    icon: Icon(
+                      controller.isPinned.value
+                          ? Icons.push_pin
+                          : Icons.push_pin_outlined,
+                    ),
+                    onPressed: () => controller.togglePinned(),
+                  ),
+                ),
                 IconButton(
                   icon: Icon(Icons.palette_outlined),
                   onPressed: () => controller.openColorPicker(),
                 ),
-                Builder(
-                  builder: (buildContext) => IconButton(
-                    icon: Icon(Icons.delete_outline),
-                    onPressed: () => controller.deleteNote(),
-                  ),
+                IconButton(
+                  icon: Icon(Icons.delete_outline),
+                  onPressed: () => controller.deleteNote(),
                 ),
               ],
             ),
